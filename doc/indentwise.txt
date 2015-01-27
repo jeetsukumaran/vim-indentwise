@@ -25,12 +25,12 @@ greater indent than the line that the cursor is currently on:
 {count}]-  Move to *next* line of *lesser* indent than the current line.
            If {count} is given, repeat to next line of even lesser indent for
            {count} times.
-{count}]+  Move to *next* line of *greater* indent than the current line.
-           If {count} is given, repeat to next line of even greater indent for
-           {count} times.
 {count}]=  Move to *next* line of *same* indent as the current line.
            If {count} is given, repeat to next line of equal indent
            for {count} times.
+{count}]+  Move to *next* line of *greater* indent than the current line.
+           If {count} is given, repeat to next line of even greater indent for
+           {count} times.
 
 In the above, a line of lesser indent is defined as a line in which the initial
 indent is less than the current line by any amount, while a line of greater
