@@ -5,6 +5,8 @@
 `IndentWise` is a Vim plugin that provides for motions based on indent depths
 or levels in normal, visual, and operator-pending modes.
 
+### Movements by Relative Indent-Depth
+
 The following key-mappings provide motions to go to lines of lesser, equal, or
 greater indent than the line that the cursor is currently on:
 
@@ -18,11 +20,7 @@ greater indent than the line that the cursor is currently on:
 The above all take a `{count}`, so that, e.g., ``4[-`` will move to the
 previous line that is 4 indent-depths less than the current one.
 
-An "indent-depth" here means *any* difference in indentation. If
-``g:indentwise_depths_by_shiftwidth_units`` or
-``b:indentwise_depths_by_shiftwidth_units`` is ``1``, then an indent-depth unit
-of change is given by ``&shiftwidth`` (instead of 1): this would make
-indent-levels almost synonymous with indent-depths.
+### Movements by Absolute Indent-Levels
 
 In addition, you can navigate directly to a line of a particular indent-*level*
 using:
@@ -30,9 +28,19 @@ using:
 - `{count}[_`  : Move to *previous* line of with indent-level of `{count}`.
 - `{count}]_`  : Move to *next* line of with indent-level of `{count}`.
 
-An indent-*level* is taken to be the effective ``shiftwidth`` value unit of
-difference in line indentation (as opposed to an indent-depth, which is *any*
-difference in line indentation)
+### Indent-Depths vs. Indent-Levels
+
+An "indent-depth" means *any* difference in indentation relative to the
+indentation of the current line.
+
+An indent-*level* is always taken to be the effective ``shiftwidth`` value unit
+of difference in line indentation (as opposed to an indent-depth, which is
+*any* difference in line indentation).
+
+[Note: *If ``g:indentwise_depths_by_shiftwidth_units`` or
+``b:indentwise_depths_by_shiftwidth_units`` is ``1``, then an indent-depth unit
+of change is given by ``&shiftwidth`` (instead of 1): this would make
+indent-levels almost synonymous with indent-depths.* ]
 
 ## Installation
 
