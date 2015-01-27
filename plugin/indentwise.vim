@@ -16,9 +16,9 @@
 ""  GNU General Public License <http://www.gnu.org/licenses/>
 ""  for more details.
 ""
-""  This program contains code:
+""  This program contains code from the following sources:
 ""
-""      By Ingo Karkat:
+""  - Vim Wiki tip contributed by Ingo Karkat:
 ""
 ""          http://vim.wikia.com/wiki/Move_to_next/previous_line_with_same_indentation
 ""
@@ -40,7 +40,7 @@ set cpo&vim
 " Main Code {{{1
 " ==============================================================================
 
-" Implementation of functionality to move linewise {{{2
+" move_to_indent_level {{{2
 " ==============================================================================
 " Jump to the next or previous line that has the same level, higher, or a
 " lower level of indentation than the current line.
