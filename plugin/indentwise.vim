@@ -86,12 +86,13 @@ function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, p
         let current_line = current_line + stepvalue
         let candidate_line_indent = indent(current_line)
         let accept_line = 0
+        let sw = shiftwidth()
         if b:indentwise_levels_by_shiftwidth
-            if ((a:indent_level < 0) && candidate_line_indent == current_indent - &shiftwidth)
+            if ((a:indent_level < 0) && candidate_line_indent == current_indent - sw)
                 let accept_line = 1
             elseif ((a:indent_level == 0) && candidate_line_indent == current_indent)
                 let accept_line = 1
-            elseif ((a:indent_level > 0) && candidate_line_indent == current_indent - &shiftwidth)
+            elseif ((a:indent_level > 0) && candidate_line_indent == current_indent - sw)
                 let accept_line = 1
             endif
         else
@@ -133,11 +134,11 @@ function! <SID>move_to_absolute_indent_level(exclusive, fwd, skip_blanks, preser
     let current_column = col('.')
     let lastline = line('$')
     let current_indent = indent(current_line)
+    let sw = shiftwidth()
     if !v:count
         let target_indent = 0
     else
-        " let target_indent = (v:count - 1 ) * &shiftwidth
-        let target_indent = v:count * &shiftwidth
+        let target_indent = v:count * sw
     endif
     if a:vis_mode
         normal! gv
