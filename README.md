@@ -11,6 +11,20 @@
 - `[=`  : Move to *previous* line of *same* indent as the current line
 - `]=`  : Move to *next* line of *same* indent as the current line
 
+The above all take a `{count}`, so that, e.g., ``4[-`` will move to the
+previous line that is 4 indent-levels less than the current one. If
+``g:indentwise_levels_by_shiftwidth`` or ``b:indentwise_levels_by_shiftwidth``
+is ``1``, then an indent-level is given by ``&shiftwidth``. Otherwise any
+quantum of difference in indentation detected as lines are trawled is taken as
+a change in indent level.
+
+In addition, you can navigate directly to a line of a particular indent-level using:
+
+- `{count}[_`  : Move to *previous* line of with indent-level of `{count}`.
+- `{count}]_`  : Move to *next* line of with indent-level of `{count}`.
+
+Here, indent-level is taken to be ``&shiftwidth``.
+
 ## Installation
 
 ### [pathogen.vim](https://github.com/tpope/vim-pathogen)
