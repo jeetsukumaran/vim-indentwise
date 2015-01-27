@@ -64,31 +64,40 @@ set cpo&vim
 " preserve_col_pos : bool
 "   true: keep current cursor column; false: go to first non-space column
 "
-function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, preserve_col_pos)
+function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, preserve_col_pos, vis_mode) range
     let stepvalue = a:fwd ? 1 : -1
     let current_line = line('.')
     let current_column = col('.')
     let lastline = line('$')
     let current_indent = indent(current_line)
-    while (current_line > 0 && current_line <= lastline)
-        let current_line = current_line + stepvalue
-        if (
-                    \ ((a:indent_level < 0) && indent(current_line) < current_indent)
-                    \ || ((a:indent_level == 0) && indent(current_line) == current_indent)
-                    \ || ((a:indent_level > 0) && indent(current_line) > current_indent)
-                    \)
-            if (! a:skip_blanks || strlen(getline(current_line)) > 0)
-                if (a:exclusive)
-                    let current_line = current_line - stepvalue
+    let num_reps = v:count1
+    echomsg num_reps
+    if a:vis_mode
+        normal! gv
+    endif
+    while (num_reps > 0 && current_line > 0 && current_line <= lastline)
+        while (current_line > 0 && current_line <= lastline)
+            let current_line = current_line + stepvalue
+            if (
+                        \ ((a:indent_level < 0) && indent(current_line) < current_indent)
+                        \ || ((a:indent_level == 0) && indent(current_line) == current_indent)
+                        \ || ((a:indent_level > 0) && indent(current_line) > current_indent)
+                        \)
+                if (! a:skip_blanks || strlen(getline(current_line)) > 0)
+                    if (a:exclusive)
+                        let current_line = current_line - stepvalue
+                    endif
+                    if a:preserve_col_pos
+                        execute "normal! " . current_line . "G" . current_column . "|"
+                    else
+                        execute "normal! " . current_line . "G^"
+                    endif
+                    break
                 endif
-                if a:preserve_col_pos
-                    execute "normal! " . current_line . "G" . current_column . "|"
-                else
-                    execute "normal! " . current_line . "G^"
-                endif
-                return
             endif
-        endif
+        endwhile
+        let num_reps = num_reps - 1
+        let current_line = line('.')
     endwhile
 endfunction
 " 2}}}
@@ -98,18 +107,21 @@ endfunction
 " Public Command and Key Maps {{{1
 " ==============================================================================
 
-nnoremap <silent> [- :call <SID>move_to_indent_level(0, 0, -1, 1, 0)<CR>
-nnoremap <silent> ]- :call <SID>move_to_indent_level(0, 1, -1, 1, 0)<CR>
-nnoremap <silent> [= :call <SID>move_to_indent_level(0, 0, 0, 1, 0)<CR>
-nnoremap <silent> ]= :call <SID>move_to_indent_level(0, 1, 0, 1, 0)<CR>
-nnoremap <silent> [+ :call <SID>move_to_indent_level(0, 0, +1, 1, 0)<CR>
-nnoremap <silent> ]+ :call <SID>move_to_indent_level(0, 1, +1, 1, 0)<CR>
-vnoremap <silent> [- <Esc>:call <SID>move_to_indent_level(0, 0, -1, 1, 0)<CR>m'gv''
-vnoremap <silent> ]- <Esc>:call <SID>move_to_indent_level(0, 1, -1, 1, 0)<CR>m'gv''
-vnoremap <silent> [= <Esc>:call <SID>move_to_indent_level(0, 0, 0, 1, 0)<CR>m'gv''
-vnoremap <silent> ]= <Esc>:call <SID>move_to_indent_level(0, 1, 0, 1, 0)<CR>m'gv''
-vnoremap <silent> [+ <Esc>:call <SID>move_to_indent_level(0, 0, +1, 1, 0)<CR>m'gv''
-vnoremap <silent> ]+ <Esc>:call <SID>move_to_indent_level(0, 1, +1, 1, 0)<CR>m'gv''
+nnoremap <silent> [- :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 0)<CR>
+nnoremap <silent> ]- :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 0)<CR>
+nnoremap <silent> [= :<C-U>call <SID>move_to_indent_level(0, 0, 0, 1, 0, 0)<CR>
+nnoremap <silent> ]= :<C-U>call <SID>move_to_indent_level(0, 1, 0, 1, 0, 0)<CR>
+nnoremap <silent> [+ :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 0)<CR>
+nnoremap <silent> ]+ :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 0)<CR>
+
+vnoremap <silent> [- <Esc>:call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
+vnoremap <silent> ]- <Esc>:call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
+vnoremap <silent> [= <Esc>:call <SID>move_to_indent_level(0, 0, 0, 1, 0, 1)<CR>
+vnoremap <silent> ]= <Esc>:call <SID>move_to_indent_level(0, 1, 0, 1, 0, 1)<CR>
+vnoremap <silent> [+ <Esc>:call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
+vnoremap <silent> ]+ <Esc>:call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
+
+
 
 " 1}}}
 
