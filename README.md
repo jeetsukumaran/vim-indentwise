@@ -16,18 +16,23 @@ greater indent than the line that the cursor is currently on:
 - `]=`  : Move to *next* line of *same* indent as the current line
 
 The above all take a `{count}`, so that, e.g., ``4[-`` will move to the
-previous line that is 4 indent-depths less than the current one. If
-``g:indentwise_depths_by_shiftwidth_units`` or ``b:indentwise_depths_by_shiftwidth_units``
-is ``1``, then an indent-depth change is given by ``&shiftwidth``. Otherwise
-any difference in indentation detected as lines are trawled is taken as a
-significant change in indent depth.
+previous line that is 4 indent-depths less than the current one.
 
-In addition, you can navigate directly to a line of a particular indent-level using:
+An "indent-depth" here means *any* difference in indentation. If
+``g:indentwise_depths_by_shiftwidth_units`` or
+``b:indentwise_depths_by_shiftwidth_units`` is ``1``, then an indent-depth unit
+of change is given by ``&shiftwidth`` (instead of 1): this would make
+indent-levels almost synonymous with indent-depths.
+
+In addition, you can navigate directly to a line of a particular indent-*level*
+using:
 
 - `{count}[_`  : Move to *previous* line of with indent-level of `{count}`.
 - `{count}]_`  : Move to *next* line of with indent-level of `{count}`.
 
-An indent-level is taken to be the effective ``shiftwidth`` value.
+An indent-*level* is taken to be the effective ``shiftwidth`` value unit of
+difference in line indentation (as opposed to an indent-depth, which is *any*
+difference in line indentation)
 
 ## Installation
 
