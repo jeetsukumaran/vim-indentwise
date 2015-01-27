@@ -4,12 +4,12 @@
 
 `IndentWise` is a Vim plugin that provides for the following movements based on indent levels:
 
-  `[-`  : Move to *previous* line of *lesser* indent as the current line
-  `]-`  : Move to *next* line of *lesser* indent as the current line
-  `[+`  : Move to *previous* line of *greater* indent as the current line
-  `]+`  : Move to *next* line of *greater* indent as the current line
-  `[=`  : Move to *previous* line of *same* indent as the current line
-  `]=`  : Move to *next* line of *same* indent as the current line
+- `[-`  : Move to *previous* line of *lesser* indent as the current line
+- `]-`  : Move to *next* line of *lesser* indent as the current line
+- `[+`  : Move to *previous* line of *greater* indent as the current line
+- `]+`  : Move to *next* line of *greater* indent as the current line
+- `[=`  : Move to *previous* line of *same* indent as the current line
+- `]=`  : Move to *next* line of *same* indent as the current line
 
 ## Installation
 
