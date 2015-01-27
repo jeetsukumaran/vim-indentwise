@@ -3,8 +3,8 @@
 ===============================================================================
                                                                      *indentwise*
 
-IndentWise is a Vim plugin that provides for motions based on indent depths
-or levels in normal, visual, and operator-pending modes.
+IndentWise provides for motions based on indent depths or levels in normal,
+visual, and operator-pending modes.
 
 
 -------------------------------------------------------------------------------
