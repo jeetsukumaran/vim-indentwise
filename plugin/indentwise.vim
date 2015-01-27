@@ -72,6 +72,8 @@ let g:indentwise_levels_by_shiftwidth = get(g:, 'indentwise_levels_by_shiftwidth
 function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, preserve_col_pos, vis_mode) range
     let stepvalue = a:fwd ? 1 : -1
     let current_line = line('.')
+    let start_line = current_line
+    let last_accepted_line = current_line
     let current_column = col('.')
     let lastline = line('$')
     let current_indent = indent(current_line)
@@ -108,19 +110,23 @@ function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, p
                 endif
                 let num_reps = num_reps - 1
                 let current_indent = candidate_line_indent
+                let last_accepted_line = current_line
                 " echomsg num_reps . ": " . current_line . ": ". getline(current_line)
             endif
         endif
     endwhile
-    if (current_line > 0 && current_line <= lastline)
+    if (last_accepted_line != start_line)
         if a:preserve_col_pos
-            execute "normal! " . current_line . "G" . current_column . "|"
+            execute "normal! " . last_accepted_line . "G" . current_column . "|"
         else
-            execute "normal! " . current_line . "G^"
+            execute "normal! " . last_accepted_line . "G^"
         endif
     endif
 endfunction
+" 2}}}
 
+" move_to_absolute_indent_level {{{2
+" ==============================================================================
 function! <SID>move_to_absolute_indent_level(exclusive, fwd, skip_blanks, preserve_col_pos, vis_mode) range
     let stepvalue = a:fwd ? 1 : -1
     let current_line = line('.')
@@ -159,7 +165,6 @@ function! <SID>move_to_absolute_indent_level(exclusive, fwd, skip_blanks, preser
         endif
     endif
 endfunction
-
 " 2}}}
 
 " 1}}}
