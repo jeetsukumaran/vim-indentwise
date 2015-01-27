@@ -67,9 +67,8 @@ Add the line below into your _.vimrc_.
 
 ### Manually
 
-Copy the _plugin/indentwise.vim_ file to your _.vim/plugin_ directory and the
-_doc/indentwise.txt_ file to your _.vim/doc_ directory and the _plugin_
-sub-directories to your _.vim_ directory.
+Copy the _`plugin/indentwise.vim`_ file to your _`.vim/plugin`_ directory and the
+_`doc/indentwise.txt`_ file to your _`.vim/doc`_ directory.
 
 ## Acknowledgements
 
