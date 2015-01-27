@@ -75,30 +75,30 @@ function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, p
     if a:vis_mode
         normal! gv
     endif
-    while (num_reps > 0 && current_line > 0 && current_line <= lastline)
-        while (current_line > 0 && current_line <= lastline)
-            let current_line = current_line + stepvalue
-            if (
-                        \ ((a:indent_level < 0) && indent(current_line) < current_indent)
-                        \ || ((a:indent_level == 0) && indent(current_line) == current_indent)
-                        \ || ((a:indent_level > 0) && indent(current_line) > current_indent)
-                        \)
-                if (! a:skip_blanks || strlen(getline(current_line)) > 0)
-                    if (a:exclusive)
-                        let current_line = current_line - stepvalue
-                    endif
-                    if a:preserve_col_pos
-                        execute "normal! " . current_line . "G" . current_column . "|"
-                    else
-                        execute "normal! " . current_line . "G^"
-                    endif
-                    break
+    while (current_line > 0 && current_line <= lastline && num_reps > 0)
+        let current_line = current_line + stepvalue
+        if (
+                    \ ((a:indent_level < 0) && indent(current_line) < current_indent)
+                    \ || ((a:indent_level == 0) && indent(current_line) == current_indent)
+                    \ || ((a:indent_level > 0) && indent(current_line) > current_indent)
+                    \)
+            if (! a:skip_blanks || strlen(getline(current_line)) > 0)
+                if (a:exclusive)
+                    let current_line = current_line - stepvalue
                 endif
+                let num_reps = num_reps - 1
+                let current_indent = indent(current_line)
+                " echomsg num_reps . ": " . current_line . ": ". getline(current_line)
             endif
-        endwhile
-        let num_reps = num_reps - 1
-        let current_line = line('.')
+        endif
     endwhile
+    if (current_line > 0 && current_line <= lastline)
+        if a:preserve_col_pos
+            execute "normal! " . current_line . "G" . current_column . "|"
+        else
+            execute "normal! " . current_line . "G^"
+        endif
+    endif
 endfunction
 " 2}}}
 
