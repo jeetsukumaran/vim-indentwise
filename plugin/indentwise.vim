@@ -37,6 +37,11 @@ let s:save_cpo = &cpo
 set cpo&vim
 " 1}}}
 
+" Options {{{1
+" ============================================================================
+let g:indentwise_levels_by_shiftwidth = get(g:, 'indentwise_levels_by_shiftwidth', 0)
+" 1}}}
+
 " Main Code {{{1
 " ==============================================================================
 
@@ -74,19 +79,35 @@ function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, p
     if a:vis_mode
         normal! gv
     endif
+    let b:indentwise_levels_by_shiftwidth = get(b:, 'indentwise_levels_by_shiftwidth', g:indentwise_levels_by_shiftwidth)
     while (current_line > 0 && current_line <= lastline && num_reps > 0)
         let current_line = current_line + stepvalue
-        if (
-                    \ ((a:indent_level < 0) && indent(current_line) < current_indent)
-                    \ || ((a:indent_level == 0) && indent(current_line) == current_indent)
-                    \ || ((a:indent_level > 0) && indent(current_line) > current_indent)
-                    \)
+        let candidate_line_indent = indent(current_line)
+        let accept_line = 0
+        if b:indentwise_levels_by_shiftwidth
+            if ((a:indent_level < 0) && candidate_line_indent == current_indent - &shiftwidth)
+                let accept_line = 1
+            elseif ((a:indent_level == 0) && candidate_line_indent == current_indent)
+                let accept_line = 1
+            elseif ((a:indent_level > 0) && candidate_line_indent == current_indent - &shiftwidth)
+                let accept_line = 1
+            endif
+        else
+            if ((a:indent_level < 0) && candidate_line_indent < current_indent)
+                let accept_line = 1
+            elseif ((a:indent_level == 0) && candidate_line_indent == current_indent)
+                let accept_line = 1
+            elseif ((a:indent_level > 0) && candidate_line_indent > current_indent)
+                let accept_line = 1
+            endif
+        endif
+        if accept_line
             if (! a:skip_blanks || strlen(getline(current_line)) > 0)
                 if (a:exclusive)
                     let current_line = current_line - stepvalue
                 endif
                 let num_reps = num_reps - 1
-                let current_indent = indent(current_line)
+                let current_indent = candidate_line_indent
                 " echomsg num_reps . ": " . current_line . ": ". getline(current_line)
             endif
         endif
@@ -99,6 +120,46 @@ function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, p
         endif
     endif
 endfunction
+
+function! <SID>move_to_absolute_indent_level(exclusive, fwd, skip_blanks, preserve_col_pos, vis_mode) range
+    let stepvalue = a:fwd ? 1 : -1
+    let current_line = line('.')
+    let current_column = col('.')
+    let lastline = line('$')
+    let current_indent = indent(current_line)
+    if !v:count
+        let target_indent = 0
+    else
+        " let target_indent = (v:count - 1 ) * &shiftwidth
+        let target_indent = v:count * &shiftwidth
+    endif
+    if a:vis_mode
+        normal! gv
+    endif
+    let num_reps = 1
+    while (current_line > 0 && current_line <= lastline && num_reps > 0)
+        let current_line = current_line + stepvalue
+        let candidate_line_indent = indent(current_line)
+        if (candidate_line_indent == target_indent)
+            if (! a:skip_blanks || strlen(getline(current_line)) > 0)
+                if (a:exclusive)
+                    let current_line = current_line - stepvalue
+                endif
+                let num_reps = num_reps - 1
+                let current_indent = candidate_line_indent
+                " echomsg num_reps . ": " . current_line . ": ". getline(current_line)
+            endif
+        endif
+    endwhile
+    if (current_line > 0 && current_line <= lastline)
+        if a:preserve_col_pos
+            execute "normal! " . current_line . "G" . current_column . "|"
+        else
+            execute "normal! " . current_line . "G^"
+        endif
+    endif
+endfunction
+
 " 2}}}
 
 " 1}}}
@@ -112,6 +173,8 @@ nnoremap <silent> [= :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
 nnoremap <silent> ]= :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 0)<CR>
 nnoremap <silent> [+ :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 0)<CR>
 nnoremap <silent> ]+ :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 0)<CR>
+nnoremap <silent> [_ :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 0)<CR>
+nnoremap <silent> ]_ :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 0)<CR>
 
 vnoremap <silent> [- <Esc>:call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
 vnoremap <silent> ]- <Esc>:call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
@@ -119,6 +182,8 @@ vnoremap <silent> [= <Esc>:call <SID>move_to_indent_level(0, 0,  0, 1, 0, 1)<CR>
 vnoremap <silent> ]= <Esc>:call <SID>move_to_indent_level(0, 1,  0, 1, 0, 1)<CR>
 vnoremap <silent> [+ <Esc>:call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
 vnoremap <silent> ]+ <Esc>:call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
+vnoremap <silent> [_ <Esc>:call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
+vnoremap <silent> ]_ <Esc>:call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
 
 onoremap <silent> [- :<C-U>call <SID>move_to_indent_level(1, 0, -1, 1, 0, 0)<CR>
 onoremap <silent> ]- :<C-U>call <SID>move_to_indent_level(1, 1, -1, 1, 0, 0)<CR>
@@ -126,6 +191,8 @@ onoremap <silent> [= :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
 onoremap <silent> ]= :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 0)<CR>
 onoremap <silent> [+ :<C-U>call <SID>move_to_indent_level(1, 0, +1, 1, 0, 0)<CR>
 onoremap <silent> ]+ :<C-U>call <SID>move_to_indent_level(1, 1, +1, 1, 0, 0)<CR>
+onoremap <silent> [_ :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
+onoremap <silent> ]_ :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
 
 
 " 1}}}
