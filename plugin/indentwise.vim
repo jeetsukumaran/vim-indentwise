@@ -71,7 +71,6 @@ function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, p
     let lastline = line('$')
     let current_indent = indent(current_line)
     let num_reps = v:count1
-    echomsg num_reps
     if a:vis_mode
         normal! gv
     endif
@@ -109,18 +108,17 @@ endfunction
 
 nnoremap <silent> [- :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 0)<CR>
 nnoremap <silent> ]- :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 0)<CR>
-nnoremap <silent> [= :<C-U>call <SID>move_to_indent_level(0, 0, 0, 1, 0, 0)<CR>
-nnoremap <silent> ]= :<C-U>call <SID>move_to_indent_level(0, 1, 0, 1, 0, 0)<CR>
+nnoremap <silent> [= :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
+nnoremap <silent> ]= :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 0)<CR>
 nnoremap <silent> [+ :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 0)<CR>
 nnoremap <silent> ]+ :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 0)<CR>
 
 vnoremap <silent> [- <Esc>:call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
 vnoremap <silent> ]- <Esc>:call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
-vnoremap <silent> [= <Esc>:call <SID>move_to_indent_level(0, 0, 0, 1, 0, 1)<CR>
-vnoremap <silent> ]= <Esc>:call <SID>move_to_indent_level(0, 1, 0, 1, 0, 1)<CR>
+vnoremap <silent> [= <Esc>:call <SID>move_to_indent_level(0, 0,  0, 1, 0, 1)<CR>
+vnoremap <silent> ]= <Esc>:call <SID>move_to_indent_level(0, 1,  0, 1, 0, 1)<CR>
 vnoremap <silent> [+ <Esc>:call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
 vnoremap <silent> ]+ <Esc>:call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
-
 
 
 " 1}}}
