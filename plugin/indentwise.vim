@@ -176,14 +176,14 @@ nnoremap <silent> ]+ :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 0)<CR>
 nnoremap <silent> [_ :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 0)<CR>
 nnoremap <silent> ]_ :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 0)<CR>
 
-vnoremap <silent> [- <Esc>:call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
-vnoremap <silent> ]- <Esc>:call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
-vnoremap <silent> [= <Esc>:call <SID>move_to_indent_level(0, 0,  0, 1, 0, 1)<CR>
-vnoremap <silent> ]= <Esc>:call <SID>move_to_indent_level(0, 1,  0, 1, 0, 1)<CR>
-vnoremap <silent> [+ <Esc>:call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
-vnoremap <silent> ]+ <Esc>:call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
-vnoremap <silent> [_ <Esc>:call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
-vnoremap <silent> ]_ <Esc>:call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
+vnoremap <silent> [- :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
+vnoremap <silent> ]- :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
+vnoremap <silent> [= :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 1)<CR>
+vnoremap <silent> ]= :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 1)<CR>
+vnoremap <silent> [+ :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
+vnoremap <silent> ]+ :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
+vnoremap <silent> [_ :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
+vnoremap <silent> ]_ :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
 
 onoremap <silent> [- :<C-U>call <SID>move_to_indent_level(1, 0, -1, 1, 0, 0)<CR>
 onoremap <silent> ]- :<C-U>call <SID>move_to_indent_level(1, 1, -1, 1, 0, 0)<CR>
