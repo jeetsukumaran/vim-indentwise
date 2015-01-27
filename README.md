@@ -47,7 +47,7 @@ strict, on the other hand, and is defined in terms of ``shiftwidth`` units.
 If ``g:indentwise_depths_by_shiftwidth_units`` or
 ``b:indentwise_depths_by_shiftwidth_units`` is true ("``1``" in Vim-land), then
 an indent-depth unit of change is given by ``&shiftwidth`` (instead of 1): this
-would make indent-levels almost synonymous with indent-depths.*
+would make indent-levels almost synonymous with indent-depths.
 
 ## Installation
 
@@ -70,7 +70,6 @@ Add the line below into your _.vimrc_.
 Copy the _plugin/indentwise.vim_ file to your _.vim/plugin_ directory and the
 _doc/indentwise.txt_ file to your _.vim/doc_ directory and the _plugin_
 sub-directories to your _.vim_ directory.
-
 
 ## Acknowledgements
 
