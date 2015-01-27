@@ -38,4 +38,4 @@ sub-directories to your _.vim_ directory.
 
 IndentWise is based on the following:
 
-    -   ["Move to next/previous line with the same indentation"](http://vim.wikia.com/wiki/Move_to_next/previous_line_with_same_indentation)
+-   ["Move to next/previous line with the same indentation"](http://vim.wikia.com/wiki/Move_to_next/previous_line_with_same_indentation)
