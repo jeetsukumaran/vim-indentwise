@@ -11,17 +11,16 @@ The following key-mappings provide motions to go to lines of lesser, equal, or
 greater indent than the line that the cursor is currently on:
 
 - `[-`  : Move to *previous* line of *lesser* indent than the current line
-- `]-`  : Move to *next* line of *lesser* indent than the current line
-- `[+`  : Move to *previous* line of *greater* indent than the current line
-- `]+`  : Move to *next* line of *greater* indent than the current line
 - `[=`  : Move to *previous* line of *same* indent as the current line
+- `[+`  : Move to *previous* line of *greater* indent than the current line
+- `]-`  : Move to *next* line of *lesser* indent than the current line
+- `]+`  : Move to *next* line of *greater* indent than the current line
 - `]=`  : Move to *next* line of *same* indent as the current line
 
 The above all take a `{count}`, so that, e.g., ``4[-`` will move to the
-previous line that is 4 indent-depths less than the current one.
-
-An "indent-depth" is simply the indentation of the line, and thus any line with
-a smaller amount of indentation relative to current line is considered at a
+previous line that is 4 indent-depths less than the current one. An
+"indent-depth" is simply the indentation of the line, and thus any line with a
+smaller amount of indentation relative to current line is considered at a
 lesser indent depth, and, conversely, any line with a greater indentation than
 the current line is considered to be at a greater indent-depth.
 

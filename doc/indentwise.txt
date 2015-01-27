@@ -16,18 +16,18 @@ greater indent than the line that the cursor is currently on:
 {count}[-  Move to *previous* line of *lesser* indent than the current line.
            If {count} is given, repeat to previous line of even lesser indent
            for {count} times.
-{count}]-  Move to *next* line of *lesser* indent than the current line.
-           If {count} is given, repeat to next line of even lesser indent for
-           {count} times.
-{count}[+  Move to *previous* line of *greater* indent than the current line.
-           If {count} is given, repeat to previous line of even greater indent
-           for {count} times.
-{count}]+  Move to *next* line of *greater* indent than the current line.
-           If {count} is given, repeat to next line of even greater indent for
-           {count} times.
 {count}[=  Move to *previous* line of *same* indent as the current line.
            If {count} is given, repeat to previous line of equal indent
            for {count} times.
+{count}[+  Move to *previous* line of *greater* indent than the current line.
+           If {count} is given, repeat to previous line of even greater indent
+           for {count} times.
+{count}]-  Move to *next* line of *lesser* indent than the current line.
+           If {count} is given, repeat to next line of even lesser indent for
+           {count} times.
+{count}]+  Move to *next* line of *greater* indent than the current line.
+           If {count} is given, repeat to next line of even greater indent for
+           {count} times.
 {count}]=  Move to *next* line of *same* indent as the current line.
            If {count} is given, repeat to next line of equal indent
            for {count} times.
