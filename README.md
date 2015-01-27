@@ -39,10 +39,11 @@ of difference in line indentation (as opposed to an indent-depth, which is
 
 ### Indent-Depths vs. Indent-Levels
 
-As noted above, an "indent-depth" is simply and indentation amount, and an
-indent-depth difference (less or more) means *any* difference in indentation
-relative to the indentation of the current line. An "indent-level" is more
-strict, on the other hand, and is defined in terms of ``shiftwidth`` units.
+As noted above, an "indent-depth" is simply the amount of indentation of a
+line. Thus an indent-depth difference (less or more) means *any* difference in
+indentation relative to the indentation of the current line. An "indent-level"
+ on the other hand, is more strict and is defined in terms of ``shiftwidth``
+units.
 
 If ``g:indentwise_depths_by_shiftwidth_units`` or
 ``b:indentwise_depths_by_shiftwidth_units`` is true ("``1``" in Vim-land), then
