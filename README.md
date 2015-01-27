@@ -5,7 +5,8 @@
 `IndentWise` is a Vim plugin that provides for motions based on indent depths
 or levels in normal, visual, and operator-pending modes.
 
-The following key-mappings provide motions to go to lines of lesser, equal, or greater indent than the line that the cursor is currently on:
+The following key-mappings provide motions to go to lines of lesser, equal, or
+greater indent than the line that the cursor is currently on:
 
 - `[-`  : Move to *previous* line of *lesser* indent than the current line
 - `]-`  : Move to *next* line of *lesser* indent than the current line
@@ -15,11 +16,11 @@ The following key-mappings provide motions to go to lines of lesser, equal, or g
 - `]=`  : Move to *next* line of *same* indent as the current line
 
 The above all take a `{count}`, so that, e.g., ``4[-`` will move to the
-previous line that is 4 indent-levels less than the current one. If
-``g:indentwise_levels_by_shiftwidth`` or ``b:indentwise_levels_by_shiftwidth``
-is ``1``, then an indent-level is given by ``&shiftwidth``. Otherwise any
-quantum of difference in indentation detected as lines are trawled is taken as
-a change in indent level.
+previous line that is 4 indent-depths less than the current one. If
+``g:indentwise_depths_by_shiftwidth_units`` or ``b:indentwise_depths_by_shiftwidth_units``
+is ``1``, then an indent-depth change is given by ``&shiftwidth``. Otherwise
+any difference in indentation detected as lines are trawled is taken as a
+significant change in indent depth.
 
 In addition, you can navigate directly to a line of a particular indent-level using:
 
