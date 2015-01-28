@@ -37,6 +37,11 @@ let s:save_cpo = &cpo
 set cpo&vim
 " 1}}}
 
+" Global Options {{{2
+" ============================================================================
+let g:indentwise_equal_indent_moves_to_next_block = get(g:, 'indentwise_equal_indent_moves_to_next_block', 1)
+" 2}}}
+
 " Main Code {{{1
 " ==============================================================================
 
@@ -55,7 +60,7 @@ set cpo&vim
 "   true: Motion is exclusive; false: Motion is inclusive
 " fwd : bool
 "   true: Go to next line; false: Go to previous line
-" indentlevel : int
+" target_indent_depth : int
 "   <0: Go to line with smaller indentation level;
 "    0: Go to line with the same indentation level;
 "   >0: Go to line with the larger indentation level;
@@ -64,7 +69,7 @@ set cpo&vim
 " preserve_col_pos : bool
 "   true: keep current cursor column; false: go to first non-space column
 "
-function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, preserve_col_pos, vis_mode) range
+function! <SID>move_to_indent_level(exclusive, fwd, target_indent_depth, skip_blanks, preserve_col_pos, vis_mode) range
     let stepvalue = a:fwd ? 1 : -1
     let current_line = line('.')
     let start_line = current_line
@@ -76,16 +81,26 @@ function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, p
     if a:vis_mode
         normal! gv
     endif
+    let indent_depth_changed = 0
     while (current_line > 0 && current_line <= lastline && num_reps > 0)
         let current_line = current_line + stepvalue
         let candidate_line_indent = indent(current_line)
         let accept_line = 0
-        if ((a:indent_level < 0) && candidate_line_indent < current_indent)
+        if ((a:target_indent_depth < 0) && candidate_line_indent < current_indent)
             let accept_line = 1
-        elseif ((a:indent_level == 0) && candidate_line_indent == current_indent)
+        elseif ((a:target_indent_depth > 0) && candidate_line_indent > current_indent)
             let accept_line = 1
-        elseif ((a:indent_level > 0) && candidate_line_indent > current_indent)
-            let accept_line = 1
+        elseif (a:target_indent_depth == 0)
+            if candidate_line_indent == current_indent
+                if l:indent_depth_changed
+                    let accept_line = 1
+                    let indent_depth_changed = 0
+                else
+                    let last_accepted_line = current_line
+                endif
+            elseif candidate_line_indent != current_indent
+                let indent_depth_changed = 1
+            endif
         endif
         if accept_line
             if (! a:skip_blanks || strlen(getline(current_line)) > 0)
