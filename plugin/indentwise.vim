@@ -156,33 +156,63 @@ endfunction
 " Public Command and Key Maps {{{1
 " ==============================================================================
 
-nnoremap <silent> [- :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 0)<CR>
-nnoremap <silent> ]- :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 0)<CR>
-nnoremap <silent> [= :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
-nnoremap <silent> ]= :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 0)<CR>
-nnoremap <silent> [+ :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 0)<CR>
-nnoremap <silent> ]+ :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 0)<CR>
-nnoremap <silent> [_ :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 0)<CR>
-nnoremap <silent> ]_ :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 0)<CR>
+nnoremap <Plug>(IndentWiseGotoPreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 0)<CR>
+vnoremap <Plug>(IndentWiseGotoPreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
+onoremap <Plug>(IndentWiseGotoPreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(1, 0, -1, 1, 0, 0)<CR>
 
-vnoremap <silent> [- :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
-vnoremap <silent> ]- :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
-vnoremap <silent> [= :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 1)<CR>
-vnoremap <silent> ]= :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 1)<CR>
-vnoremap <silent> [+ :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
-vnoremap <silent> ]+ :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
-vnoremap <silent> [_ :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
-vnoremap <silent> ]_ :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
+nnoremap <Plug>(IndentWiseGotoPreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
+vnoremap <Plug>(IndentWiseGotoPreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 1)<CR>
+onoremap <Plug>(IndentWiseGotoPreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
 
-onoremap <silent> [- :<C-U>call <SID>move_to_indent_level(1, 0, -1, 1, 0, 0)<CR>
-onoremap <silent> ]- :<C-U>call <SID>move_to_indent_level(1, 1, -1, 1, 0, 0)<CR>
-onoremap <silent> [= :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
-onoremap <silent> ]= :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 0)<CR>
-onoremap <silent> [+ :<C-U>call <SID>move_to_indent_level(1, 0, +1, 1, 0, 0)<CR>
-onoremap <silent> ]+ :<C-U>call <SID>move_to_indent_level(1, 1, +1, 1, 0, 0)<CR>
-onoremap <silent> [_ :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
-onoremap <silent> ]_ :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
+nnoremap <Plug>(IndentWiseGotoPreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 0)<CR>
+vnoremap <Plug>(IndentWiseGotoPreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
+onoremap <Plug>(IndentWiseGotoPreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(1, 0, +1, 1, 0, 0)<CR>
 
+nnoremap <Plug>(IndentWiseGotoNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 0)<CR>
+vnoremap <Plug>(IndentWiseGotoNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
+onoremap <Plug>(IndentWiseGotoNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(1, 1, -1, 1, 0, 0)<CR>
+
+nnoremap <Plug>(IndentWiseGotoNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 0)<CR>
+vnoremap <Plug>(IndentWiseGotoNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 1)<CR>
+onoremap <Plug>(IndentWiseGotoNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(1, 1,  0, 1, 0, 0)<CR>
+
+nnoremap <Plug>(IndentWiseGotoNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 0)<CR>
+vnoremap <Plug>(IndentWiseGotoNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
+onoremap <Plug>(IndentWiseGotoNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(1, 1, +1, 1, 0, 0)<CR>
+
+nnoremap <Plug>(IndentWiseGotoPreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 0)<CR>
+vnoremap <Plug>(IndentWiseGotoPreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
+onoremap <Plug>(IndentWiseGotoPreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
+nnoremap <Plug>(IndentWiseGotoNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 0)<CR>
+vnoremap <Plug>(IndentWiseGotoNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
+onoremap <Plug>(IndentWiseGotoNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
+
+if !exists("g:indentwise_suppress_keymaps") || !g:indentwise_suppress_keymaps
+    if !hasmapto('<Plug>IndentWiseGotoPreviousLesserIndent')
+        map <silent> [- <Plug>(IndentWiseGotoPreviousLesserIndent)
+    endif
+    if !hasmapto('<Plug>IndentWiseGotoPreviousEqualIndent')
+        map <silent> [= <Plug>(IndentWiseGotoPreviousEqualIndent)
+    endif
+    if !hasmapto('<Plug>IndentWiseGotoPreviousGreaterIndent')
+        map <silent> [+ <Plug>(IndentWiseGotoPreviousGreaterIndent)
+    endif
+    if !hasmapto('<Plug>IndentWiseGotoNextLesserIndent')
+        map <silent> ]- <Plug>(IndentWiseGotoNextLesserIndent)
+    endif
+    if !hasmapto('<Plug>IndentWiseGotoNextEqualIndent')
+        map <silent> ]= <Plug>(IndentWiseGotoNextEqualIndent)
+    endif
+    if !hasmapto('<Plug>IndentWiseGotoNextGreaterIndent')
+        map <silent> ]+ <Plug>(IndentWiseGotoNextGreaterIndent)
+    endif
+    if !hasmapto('<Plug>IndentWiseGotoPreviousAbsoluteIndent')
+        map <silent> [_ <Plug>(IndentWiseGotoPreviousAbsoluteIndent)
+    endif
+    if !hasmapto('<Plug>IndentWiseGotoNextAbsoluteIndent')
+        map <silent> ]_ <Plug>(IndentWiseGotoNextAbsoluteIndent)
+    endif
+endif
 
 " 1}}}
 
