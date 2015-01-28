@@ -45,6 +45,19 @@ let g:indentwise_equal_indent_skips_contiguous = get(g:, 'indentwise_equal_inden
 " Main Code {{{1
 " ==============================================================================
 
+" sw() {{{2
+" ==============================================================================
+if exists('*shiftwidth')
+    func s:sw()
+        return shiftwidth()
+    endfunc
+else
+    func s:sw()
+        return &sw
+    endfunc
+endif
+" 2}}}
+
 " move_to_indent_level {{{2
 " ==============================================================================
 " Jump to the next or previous line that has the same level, higher, or a
@@ -132,12 +145,7 @@ function! <SID>move_to_absolute_indent_level(exclusive, fwd, skip_blanks, preser
     let current_column = col('.')
     let lastline = line('$')
     let current_indent = indent(current_line)
-    let sw = shiftwidth()
-    if !v:count
-        let target_indent = 0
-    else
-        let target_indent = v:count * sw
-    endif
+    let target_indent = v:count * s:sw()
     if a:vis_mode
         normal! gv
     endif
