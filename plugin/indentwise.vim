@@ -37,11 +37,6 @@ let s:save_cpo = &cpo
 set cpo&vim
 " 1}}}
 
-" Options {{{1
-" ============================================================================
-let g:indentwise_depths_by_shiftwidth_units = get(g:, 'indentwise_depths_by_shiftwidth_units', 0)
-" 1}}}
-
 " Main Code {{{1
 " ==============================================================================
 
@@ -81,28 +76,16 @@ function! <SID>move_to_indent_level(exclusive, fwd, indent_level, skip_blanks, p
     if a:vis_mode
         normal! gv
     endif
-    let b:indentwise_depths_by_shiftwidth_units = get(b:, 'indentwise_depths_by_shiftwidth_units', g:indentwise_depths_by_shiftwidth_units)
     while (current_line > 0 && current_line <= lastline && num_reps > 0)
         let current_line = current_line + stepvalue
         let candidate_line_indent = indent(current_line)
         let accept_line = 0
-        let sw = shiftwidth()
-        if b:indentwise_depths_by_shiftwidth_units
-            if ((a:indent_level < 0) && candidate_line_indent == current_indent - sw)
-                let accept_line = 1
-            elseif ((a:indent_level == 0) && candidate_line_indent == current_indent)
-                let accept_line = 1
-            elseif ((a:indent_level > 0) && candidate_line_indent == current_indent - sw)
-                let accept_line = 1
-            endif
-        else
-            if ((a:indent_level < 0) && candidate_line_indent < current_indent)
-                let accept_line = 1
-            elseif ((a:indent_level == 0) && candidate_line_indent == current_indent)
-                let accept_line = 1
-            elseif ((a:indent_level > 0) && candidate_line_indent > current_indent)
-                let accept_line = 1
-            endif
+        if ((a:indent_level < 0) && candidate_line_indent < current_indent)
+            let accept_line = 1
+        elseif ((a:indent_level == 0) && candidate_line_indent == current_indent)
+            let accept_line = 1
+        elseif ((a:indent_level > 0) && candidate_line_indent > current_indent)
+            let accept_line = 1
         endif
         if accept_line
             if (! a:skip_blanks || strlen(getline(current_line)) > 0)

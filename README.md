@@ -44,11 +44,6 @@ difference in indentation relative to the indentation of the current line. An
 "indent-level" on the other hand, is more strict and is defined in terms of
 ``shiftwidth`` units.
 
-If ``g:indentwise_depths_by_shiftwidth_units`` or
-``b:indentwise_depths_by_shiftwidth_units`` is true ("``1``" in Vim-land), then
-an indent-depth unit of change is given by ``&shiftwidth`` (instead of 1): this
-would make indent-levels almost synonymous with indent-depths.
-
 ## Installation
 
 ### [pathogen.vim](https://github.com/tpope/vim-pathogen)
