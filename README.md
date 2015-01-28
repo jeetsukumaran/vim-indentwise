@@ -10,12 +10,14 @@ or levels in normal, visual, and operator-pending modes.
 The following key-mappings provide motions to go to lines of lesser, equal, or
 greater indent than the line that the cursor is currently on:
 
-- `[-`  : Move to *previous* line of *lesser* indent than the current line
-- `[=`  : Move to *previous* line of *same* indent as the current line
-- `[+`  : Move to *previous* line of *greater* indent than the current line
-- `]-`  : Move to *next* line of *lesser* indent than the current line
-- `]=`  : Move to *next* line of *same* indent as the current line
-- `]+`  : Move to *next* line of *greater* indent than the current line
+- `[-`  : Move to *previous* line of *lesser* indent than the current line.
+- `[+`  : Move to *previous* line of *greater* indent than the current line.
+- `[=`  : Move to *previous* line of *same* indent as the current line that
+          is separated from the current line by lines of different indents.
+- `]-`  : Move to *next* line of *lesser* indent than the current line.
+- `]+`  : Move to *next* line of *greater* indent than the current line.
+- `]=`  : Move to *next* line of *same* indent as the current line that
+          is separated from the current line by lines of different indents.
 
 The above all take a `{count}`, so that, e.g., ``4[-`` will move to the
 previous line that is 4 indent-depths less than the current one. An
