@@ -39,7 +39,7 @@ set cpo&vim
 
 " Global Options {{{2
 " ============================================================================
-let g:indentwise_equal_indent_moves_to_next_block = get(g:, 'indentwise_equal_indent_moves_to_next_block', 1)
+let g:indentwise_equal_indent_skips_contiguous = get(g:, 'indentwise_equal_indent_skips_contiguous', 1)
 " 2}}}
 
 " Main Code {{{1
@@ -92,7 +92,7 @@ function! <SID>move_to_indent_level(exclusive, fwd, target_indent_depth, skip_bl
             let accept_line = 1
         elseif (a:target_indent_depth == 0)
             if candidate_line_indent == current_indent
-                if l:indent_depth_changed
+                if l:indent_depth_changed || !g:indentwise_equal_indent_skips_contiguous
                     let accept_line = 1
                     let indent_depth_changed = 0
                 else
