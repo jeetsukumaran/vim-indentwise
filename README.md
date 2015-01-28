@@ -32,17 +32,17 @@ using:
 - `{count}[_`  : Move to *previous* line with indent-level of `{count}`.
 - `{count}]_`  : Move to *next* line with indent-level of `{count}`.
 
-An indent-*level* is always taken to be the effective ``shiftwidth`` value unit
-of difference in line indentation (as opposed to an indent-depth, which is
-*any* difference in line indentation).
+An "indent-*level*" of a line is the number of ``shiftwidth`` units that the
+line is indented (as opposed to the "indent-*depth*", which is just the
+indentation amount of a line).
 
 ### Indent-Depths vs. Indent-Levels
 
 As noted above, an "indent-depth" is simply the amount of indentation of a
-line. Thus an indent-depth difference (less or more) means *any* difference in
-indentation relative to the indentation of the current line. An "indent-level"
- on the other hand, is more strict and is defined in terms of ``shiftwidth``
-units.
+line. Thus an indent-depth difference (either greater or lesser) means *any*
+difference in indentation relative to the indentation of the current line. An
+"indent-level" on the other hand, is more strict and is defined in terms of
+``shiftwidth`` units.
 
 If ``g:indentwise_depths_by_shiftwidth_units`` or
 ``b:indentwise_depths_by_shiftwidth_units`` is true ("``1``" in Vim-land), then
