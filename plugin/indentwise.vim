@@ -211,28 +211,28 @@ vnoremap <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolu
 onoremap <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
 
 if !exists("g:indentwise_suppress_keymaps") || !g:indentwise_suppress_keymaps
-    if !hasmapto('<Plug>IndentWisePreviousLesserIndent')
+    if !hasmapto('<Plug>(IndentWisePreviousLesserIndent)')
         map <silent> [- <Plug>(IndentWisePreviousLesserIndent)
     endif
-    if !hasmapto('<Plug>IndentWisePreviousEqualIndent')
+    if !hasmapto('<Plug>(IndentWisePreviousEqualIndent)')
         map <silent> [= <Plug>(IndentWisePreviousEqualIndent)
     endif
-    if !hasmapto('<Plug>IndentWisePreviousGreaterIndent')
+    if !hasmapto('<Plug>(IndentWisePreviousGreaterIndent)')
         map <silent> [+ <Plug>(IndentWisePreviousGreaterIndent)
     endif
-    if !hasmapto('<Plug>IndentWiseNextLesserIndent')
+    if !hasmapto('<Plug>(IndentWiseNextLesserIndent)')
         map <silent> ]- <Plug>(IndentWiseNextLesserIndent)
     endif
-    if !hasmapto('<Plug>IndentWiseNextEqualIndent')
+    if !hasmapto('<Plug>(IndentWiseNextEqualIndent)')
         map <silent> ]= <Plug>(IndentWiseNextEqualIndent)
     endif
-    if !hasmapto('<Plug>IndentWiseNextGreaterIndent')
+    if !hasmapto('<Plug>(IndentWiseNextGreaterIndent)')
         map <silent> ]+ <Plug>(IndentWiseNextGreaterIndent)
     endif
-    if !hasmapto('<Plug>IndentWisePreviousAbsoluteIndent')
+    if !hasmapto('<Plug>(IndentWisePreviousAbsoluteIndent)')
         map <silent> [_ <Plug>(IndentWisePreviousAbsoluteIndent)
     endif
-    if !hasmapto('<Plug>IndentWiseNextAbsoluteIndent')
+    if !hasmapto('<Plug>(IndentWiseNextAbsoluteIndent)')
         map <silent> ]_ <Plug>(IndentWiseNextAbsoluteIndent)
     endif
 endif
