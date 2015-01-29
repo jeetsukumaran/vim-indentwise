@@ -179,61 +179,61 @@ endfunction
 " Public Command and Key Maps {{{1
 " ==============================================================================
 
-nnoremap <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 0)<CR>
-vnoremap <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
-onoremap <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(1, 0, -1, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(1, 0, -1, 1, 0, 0)<CR>
 
-nnoremap <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
-vnoremap <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 1)<CR>
-onoremap <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
 
-nnoremap <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 0)<CR>
-vnoremap <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
-onoremap <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(1, 0, +1, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(1, 0, +1, 1, 0, 0)<CR>
 
-nnoremap <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 0)<CR>
-vnoremap <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
-onoremap <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(1, 1, -1, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(1, 1, -1, 1, 0, 0)<CR>
 
-nnoremap <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 0)<CR>
-vnoremap <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 1)<CR>
-onoremap <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(1, 1,  0, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(1, 1,  0, 1, 0, 0)<CR>
 
-nnoremap <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 0)<CR>
-vnoremap <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
-onoremap <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(1, 1, +1, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(1, 1, +1, 1, 0, 0)<CR>
 
-nnoremap <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 0)<CR>
-vnoremap <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
-onoremap <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
-nnoremap <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 0)<CR>
-vnoremap <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
-onoremap <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
+nnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
 
 if !exists("g:indentwise_suppress_keymaps") || !g:indentwise_suppress_keymaps
-    if !hasmapto('<Plug>IndentWisePreviousLesserIndent')
-        map <silent> [- <Plug>(IndentWisePreviousLesserIndent)
+    if !hasmapto('<Plug>(IndentWisePreviousLesserIndent)')
+        map [- <Plug>(IndentWisePreviousLesserIndent)
     endif
-    if !hasmapto('<Plug>IndentWisePreviousEqualIndent')
-        map <silent> [= <Plug>(IndentWisePreviousEqualIndent)
+    if !hasmapto('<Plug>(IndentWisePreviousEqualIndent)')
+        map [= <Plug>(IndentWisePreviousEqualIndent)
     endif
-    if !hasmapto('<Plug>IndentWisePreviousGreaterIndent')
-        map <silent> [+ <Plug>(IndentWisePreviousGreaterIndent)
+    if !hasmapto('<Plug>(IndentWisePreviousGreaterIndent)')
+        map [+ <Plug>(IndentWisePreviousGreaterIndent)
     endif
-    if !hasmapto('<Plug>IndentWiseNextLesserIndent')
-        map <silent> ]- <Plug>(IndentWiseNextLesserIndent)
+    if !hasmapto('<Plug>(IndentWiseNextLesserIndent)')
+        map ]- <Plug>(IndentWiseNextLesserIndent)
     endif
-    if !hasmapto('<Plug>IndentWiseNextEqualIndent')
-        map <silent> ]= <Plug>(IndentWiseNextEqualIndent)
+    if !hasmapto('<Plug>(IndentWiseNextEqualIndent)')
+        map ]= <Plug>(IndentWiseNextEqualIndent)
     endif
-    if !hasmapto('<Plug>IndentWiseNextGreaterIndent')
-        map <silent> ]+ <Plug>(IndentWiseNextGreaterIndent)
+    if !hasmapto('<Plug>(IndentWiseNextGreaterIndent)')
+        map ]+ <Plug>(IndentWiseNextGreaterIndent)
     endif
-    if !hasmapto('<Plug>IndentWisePreviousAbsoluteIndent')
-        map <silent> [_ <Plug>(IndentWisePreviousAbsoluteIndent)
+    if !hasmapto('<Plug>(IndentWisePreviousAbsoluteIndent)')
+        map [_ <Plug>(IndentWisePreviousAbsoluteIndent)
     endif
-    if !hasmapto('<Plug>IndentWiseNextAbsoluteIndent')
-        map <silent> ]_ <Plug>(IndentWiseNextAbsoluteIndent)
+    if !hasmapto('<Plug>(IndentWiseNextAbsoluteIndent)')
+        map ]_ <Plug>(IndentWiseNextAbsoluteIndent)
     endif
 endif
 
