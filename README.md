@@ -38,6 +38,21 @@ An "indent-*level*" of a line is the number of ``shiftwidth`` units that the
 line is indented (as opposed to the "indent-*depth*", which is just the
 indentation amount of a line).
 
+### Customization
+
+If you are unhappy with the default key-mappings you can provide your own by
+defining custom mappings in your _`.vimrc`_. For example to replicate the
+default mappings, you would define the following:
+
+    map <silent> [- <Plug>(IndentWisePreviousLesserIndent)
+    map <silent> [= <Plug>(IndentWisePreviousEqualIndent)
+    map <silent> [+ <Plug>(IndentWisePreviousGreaterIndent)
+    map <silent> ]- <Plug>(IndentWiseNextLesserIndent)
+    map <silent> ]= <Plug>(IndentWiseNextEqualIndent)
+    map <silent> ]+ <Plug>(IndentWiseNextGreaterIndent)
+    map <silent> [_ <Plug>(IndentWisePreviousAbsoluteIndent)
+    map <silent> ]_ <Plug>(IndentWiseNextAbsoluteIndent)
+
 ### Indent-Depths vs. Indent-Levels
 
 As noted above, an "indent-depth" is simply the amount of indentation of a
@@ -45,6 +60,7 @@ line. Thus an indent-depth difference (either greater or lesser) means *any*
 difference in indentation relative to the indentation of the current line. An
 "indent-level" on the other hand, is more strict and is defined in terms of
 ``shiftwidth`` units.
+
 
 ## Installation
 
