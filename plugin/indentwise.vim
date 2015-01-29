@@ -58,10 +58,10 @@ else
 endif
 " 2}}}
 
-" move_to_indent_level {{{2
+" move_to_indent_depth {{{2
 " ==============================================================================
-" Jump to the next or previous line that has the same level, higher, or a
-" lower level of indentation than the current line.
+" Jump to the next or previous line that has the same depth, higher, or a
+" lower depth of indentation than the current line.
 "
 " Shamelessly taken and modified from code contributed by Ingo Karkat:
 "
@@ -74,15 +74,15 @@ endif
 " fwd : bool
 "   true: Go to next line; false: Go to previous line
 " target_indent_depth : int
-"   <0: Go to line with smaller indentation level;
-"    0: Go to line with the same indentation level;
-"   >0: Go to line with the larger indentation level;
+"   <0: Go to line with smaller indentation depth;
+"    0: Go to line with the same indentation depth;
+"   >0: Go to line with the larger indentation depth;
 " skip_blanks : bool
 "   true: Skip blank lines; false: Don't skip blank lines
 " preserve_col_pos : bool
 "   true: keep current cursor column; false: go to first non-space column
 "
-function! <SID>move_to_indent_level(exclusive, fwd, target_indent_depth, skip_blanks, preserve_col_pos, vis_mode) range
+function! <SID>move_to_indent_depth(exclusive, fwd, target_indent_depth, skip_blanks, preserve_col_pos, vis_mode) range
     let stepvalue = a:fwd ? 1 : -1
     let current_line = line('.')
     let start_line = current_line
@@ -179,29 +179,29 @@ endfunction
 " Public Command and Key Maps {{{1
 " ==============================================================================
 
-nnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(0, 0, -1, 1, 0, 1)<CR>
-onoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_level(1, 0, -1, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_depth(0, 0, -1, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_depth(0, 0, -1, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_depth(1, 0, -1, 1, 0, 0)<CR>
 
-nnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 1)<CR>
-onoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_level(0, 0,  0, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_depth(0, 0,  0, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_depth(0, 0,  0, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_depth(0, 0,  0, 1, 0, 0)<CR>
 
-nnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(0, 0, +1, 1, 0, 1)<CR>
-onoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_level(1, 0, +1, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_depth(0, 0, +1, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_depth(0, 0, +1, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_depth(1, 0, +1, 1, 0, 0)<CR>
 
-nnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(0, 1, -1, 1, 0, 1)<CR>
-onoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_level(1, 1, -1, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_depth(0, 1, -1, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_depth(0, 1, -1, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_depth(1, 1, -1, 1, 0, 0)<CR>
 
-nnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(0, 1,  0, 1, 0, 1)<CR>
-onoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_level(1, 1,  0, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_depth(0, 1,  0, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_depth(0, 1,  0, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_depth(1, 1,  0, 1, 0, 0)<CR>
 
-nnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(0, 1, +1, 1, 0, 1)<CR>
-onoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_level(1, 1, +1, 1, 0, 0)<CR>
+nnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_depth(0, 1, +1, 1, 0, 0)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_depth(0, 1, +1, 1, 0, 1)<CR>
+onoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_depth(1, 1, +1, 1, 0, 0)<CR>
 
 nnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 0)<CR>
 vnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
