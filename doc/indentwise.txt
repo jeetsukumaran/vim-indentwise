@@ -13,24 +13,24 @@ visual, and operator-pending modes.
 The following key-mappings provide motions to go to lines of lesser, equal, or
 greater indent than the line that the cursor is currently on:
 
-{count}[-  Move to *previous* line of *lesser* indent than the current line.
+{count}[-  Move to |previous| line of |lesser| indent than the current line.
            If {count} is given, repeat to previous line of even lesser indent
            for {count} times.
-{count}[+  Move to *previous* line of *greater* indent than the current line.
+{count}[+  Move to |previous| line of |greater| indent than the current line.
            If {count} is given, repeat to previous line of even greater indent
            for {count} times.
-{count}[=  Move to *previous* line of *same* indent as the current line that
+{count}[=  Move to |previous| line of |same| indent as the current line that
            is separated from the current line by one or more lines
            of different indents.
            If {count} is given, repeat to previous line of equal indent
            for {count} times.
-{count}]-  Move to *next* line of *lesser* indent than the current line.
+{count}]-  Move to |next| line of |lesser| indent than the current line.
            If {count} is given, repeat to next line of even lesser indent for
            {count} times.
-{count}]+  Move to *next* line of *greater* indent than the current line.
+{count}]+  Move to |next| line of |greater| indent than the current line.
            If {count} is given, repeat to next line of even greater indent for
            {count} times.
-{count}]=  Move to *next* line of *same* indent as the current line that
+{count}]=  Move to |next| line of |same| indent as the current line that
            is separated from the current line by one or more lines
            of different indents.
            If {count} is given, repeat to next line of equal indent
@@ -48,8 +48,8 @@ The following key-mappings provide motions to go to lines of an indent-level
 given by {count}, where an indent-level is given by the effective
 |'shiftwidth'| setting:
 
-{count}[_   Move to *previous* line of with indent-level of {count}.
-{count}]_   Move to *next* line of with indent-level of {count}.
+{count}[_   Move to |previous| line of with indent-level of {count}.
+{count}]_   Move to |next| line of with indent-level of {count}.
 
  vim:tw=78:ts=8:ft=help:norl:
 
