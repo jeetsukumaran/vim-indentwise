@@ -130,9 +130,9 @@ function! <SID>move_to_indent_depth(exclusive, fwd, target_indent_depth, skip_bl
     if a:vis_mode
         normal! gv
     endif
-            if (a:exclusive)
-                let last_accepted_line = last_accepted_line - stepvalue
-            endif
+    if (a:exclusive)
+        let last_accepted_line = last_accepted_line - stepvalue
+    endif
     if (last_accepted_line != start_line)
         if a:preserve_col_pos
             execute "normal! " . last_accepted_line . "G" . current_column . "|"
@@ -146,30 +146,34 @@ endfunction
 " move_to_absolute_indent_level {{{2
 " ==============================================================================
 function! <SID>move_to_absolute_indent_level(exclusive, fwd, skip_blanks, preserve_col_pos, vis_mode) range
-    let stepvalue = a:fwd ? 1 : -1
-    let current_line = line('.')
-    let current_column = col('.')
+    if a:fwd
+        let stepvalue = 1
+        let current_line = a:lastline
+    else
+        let stepvalue = -1
+        let current_line = a:firstline
+    endif
     let lastline = line('$')
     let current_indent = indent(current_line)
     let target_indent = v:count * s:sw()
-    if a:vis_mode
-        normal! gv
-    endif
     let num_reps = 1
     while (current_line > 0 && current_line <= lastline && num_reps > 0)
         let current_line = current_line + stepvalue
         let candidate_line_indent = indent(current_line)
         if (candidate_line_indent == target_indent)
             if (! a:skip_blanks || strlen(getline(current_line)) > 0)
-                if (a:exclusive)
-                    let current_line = current_line - stepvalue
-                endif
                 let num_reps = num_reps - 1
                 let current_indent = candidate_line_indent
                 " echomsg num_reps . ": " . current_line . ": ". getline(current_line)
             endif
         endif
     endwhile
+    if a:vis_mode
+        normal! gv
+    endif
+    if (a:exclusive)
+        let current_line = current_line - stepvalue
+    endif
     if (current_line > 0 && current_line <= lastline)
         if a:preserve_col_pos
             execute "normal! " . current_line . "G" . current_column . "|"
@@ -210,10 +214,10 @@ vnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :call <SID>move_to_in
 onoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      V:<C-U>call <SID>move_to_indent_depth(1, 1, +1, 1, 0, 0)<CR>
 
 nnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 1)<CR>
 onoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) V:<C-U>call <SID>move_to_absolute_indent_level(1, 0, 1, 0, 1)<CR>
 nnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     :call <SID>move_to_absolute_indent_level(0, 1, 1, 0, 1)<CR>
 onoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     V:<C-U>call <SID>move_to_absolute_indent_level(1, 1, 1, 0, 1)<CR>
 
 if !exists("g:indentwise_suppress_keymaps") || !g:indentwise_suppress_keymaps
