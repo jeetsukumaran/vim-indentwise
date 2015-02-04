@@ -37,10 +37,10 @@ let s:save_cpo = &cpo
 set cpo&vim
 " 1}}}
 
-" Global Options {{{2
+" Global Options {{{1
 " ============================================================================
 let g:indentwise_equal_indent_skips_contiguous = get(g:, 'indentwise_equal_indent_skips_contiguous', 1)
-" 2}}}
+" 1}}}
 
 " Main Code {{{1
 " ==============================================================================
@@ -84,16 +84,19 @@ endif
 "
 function! <SID>move_to_indent_depth(exclusive, fwd, target_indent_depth, skip_blanks, preserve_col_pos, vis_mode) range
     let stepvalue = a:fwd ? 1 : -1
-    let current_line = line('.')
+    if a:fwd
+        let stepvalue = 1
+        let current_line = a:lastline
+    else
+        let stepvalue = -1
+        let current_line = a:firstline
+    endif
     let start_line = current_line
     let last_accepted_line = current_line
     let current_column = col('.')
     let lastline = line('$')
     let current_indent = indent(current_line)
     let num_reps = v:count1
-    if a:vis_mode
-        normal! gv
-    endif
     let indent_depth_changed = 0
     while (current_line > 0 && current_line <= lastline && num_reps > 0)
         let current_line = current_line + stepvalue
@@ -127,6 +130,9 @@ function! <SID>move_to_indent_depth(exclusive, fwd, target_indent_depth, skip_bl
             endif
         endif
     endwhile
+    if a:vis_mode
+        normal! gv
+    endif
     if (last_accepted_line != start_line)
         if a:preserve_col_pos
             execute "normal! " . last_accepted_line . "G" . current_column . "|"
@@ -180,27 +186,27 @@ endfunction
 " ==============================================================================
 
 nnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_depth(0, 0, -1, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_depth(0, 0, -1, 1, 0, 1)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :call <SID>move_to_indent_depth(0, 0, -1, 1, 0, 1)<CR>
 onoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_depth(1, 0, -1, 1, 0, 0)<CR>
 
 nnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_depth(0, 0,  0, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_depth(0, 0,  0, 1, 0, 1)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :call <SID>move_to_indent_depth(0, 0,  0, 1, 0, 1)<CR>
 onoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_depth(0, 0,  0, 1, 0, 0)<CR>
 
 nnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_depth(0, 0, +1, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_depth(0, 0, +1, 1, 0, 1)<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :call <SID>move_to_indent_depth(0, 0, +1, 1, 0, 1)<CR>
 onoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_depth(1, 0, +1, 1, 0, 0)<CR>
 
 nnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_depth(0, 1, -1, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_depth(0, 1, -1, 1, 0, 1)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :call <SID>move_to_indent_depth(0, 1, -1, 1, 0, 1)<CR>
 onoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_depth(1, 1, -1, 1, 0, 0)<CR>
 
 nnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_depth(0, 1,  0, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_depth(0, 1,  0, 1, 0, 1)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :call <SID>move_to_indent_depth(0, 1,  0, 1, 0, 1)<CR>
 onoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_depth(1, 1,  0, 1, 0, 0)<CR>
 
 nnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_depth(0, 1, +1, 1, 0, 0)<CR>
-vnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_depth(0, 1, +1, 1, 0, 1)<CR>
+vnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :call <SID>move_to_indent_depth(0, 1, +1, 1, 0, 1)<CR>
 onoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_depth(1, 1, +1, 1, 0, 0)<CR>
 
 nnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, 0)<CR>
