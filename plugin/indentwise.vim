@@ -235,6 +235,54 @@ function! <SID>move_to_absolute_indent_level(fwd, exclusive, vim_mode) range
 endfunction
 " 2}}}
 
+" move_to_indent_block_scope_boundary {{{2
+" ==============================================================================
+function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
+    if a:fwd
+        let current_column = col('.')
+        let line_of_lesser_indent = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, "<", 0, v:count1)
+        let line_of_greater_indent = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, ">", 0, v:count1)
+        let line_of_equal_indent = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, "==", 0, v:count1)
+        let stepvalue = +1
+        let target_offset = -1
+        let current_line = a:lastline
+        let fallback_target_line = line("$")
+        if (line_of_equal_indent == current_line + stepvalue) || (line_of_greater_indent == current_line + stepvalue)
+            " next line is same indent; block scope boundary is at lesser indent
+            if line_of_lesser_indent > 0
+                let target_line = line_of_lesser_indent + target_offset
+            else
+                let target_line = fallback_target_line
+            endif
+        else
+            if line_of_lesser_indent > 0 && line_of_equal_indent > 0
+                let target_line = min([line_of_lesser_indent, line_of_equal_indent])
+                let target_line -= stepvalue
+            elseif line_of_lesser_indent > 0
+                let target_line = line_of_lesser_indent + target_offset
+            elseif line_of_equal_indent > 0
+                let target_line = line_of_equal_indent + target_offset
+            else
+                let target_line = fallback_target_line
+            endif
+        endif
+        if a:vim_mode == "v"
+            normal! gv
+        endif
+        if target_line > 0
+            let preserve_col_pos = get(b:, "indentwise_preserve_col_pos", get(g:, "indentwise_preserve_col_pos", 0))
+            if preserve_col_pos
+                execute "normal! " . target_line . "G" . current_column . "|"
+            else
+                execute "normal! " . target_line . "G^"
+            endif
+        endif
+    else
+        call s:move_to_indent_depth(0, "<", 1, a:vim_mode)
+    endif
+endfunction
+" 2}}}
+
 " 1}}}
 
 " Public Command and Key Maps {{{1
@@ -272,6 +320,14 @@ nnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)      :<C-U>call <SID>move
 vnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)           :call <SID>move_to_absolute_indent_level(1, 0, "v")<CR>
 onoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     V:<C-U>call <SID>move_to_absolute_indent_level(1, 0, "o")<CR>
 
+nnoremap <silent> <Plug>(IndentWiseBlockScopeBoundaryBegin)  :<C-U>call <SID>move_to_indent_block_scope_boundary(0, "n")<CR>
+vnoremap <silent> <Plug>(IndentWiseBlockScopeBoundaryBegin)       :call <SID>move_to_indent_block_scope_boundary(0, "v")<CR>
+onoremap <silent> <Plug>(IndentWiseBlockScopeBoundaryBegin) V:<C-U>call <SID>move_to_indent_block_scope_boundary(0, "o")<CR>
+
+nnoremap <silent> <Plug>(IndentWiseBlockScopeBoundaryEnd)      :<C-U>call <SID>move_to_indent_block_scope_boundary(1, "n")<CR>
+vnoremap <silent> <Plug>(IndentWiseBlockScopeBoundaryEnd)           :call <SID>move_to_indent_block_scope_boundary(1, "v")<CR>
+onoremap <silent> <Plug>(IndentWiseBlockScopeBoundaryEnd)     V:<C-U>call <SID>move_to_indent_block_scope_boundary(1, "o")<CR>
+
 if !exists("g:indentwise_suppress_keymaps") || !g:indentwise_suppress_keymaps
     if !hasmapto('<Plug>(IndentWisePreviousLesserIndent)')
         map [- <Plug>(IndentWisePreviousLesserIndent)
@@ -297,6 +353,13 @@ if !exists("g:indentwise_suppress_keymaps") || !g:indentwise_suppress_keymaps
     if !hasmapto('<Plug>(IndentWiseNextAbsoluteIndent)')
         map ]_ <Plug>(IndentWiseNextAbsoluteIndent)
     endif
+    if !hasmapto('<Plug>(IndentWiseBlockScopeBoundaryBegin)')
+        map [% <Plug>(IndentWiseBlockScopeBoundaryBegin)
+    endif
+    if !hasmapto('<Plug>(IndentWiseBlockScopeBoundaryEnd)')
+        map ]% <Plug>(IndentWiseBlockScopeBoundaryEnd)
+    endif
+
 endif
 
 " 1}}}
