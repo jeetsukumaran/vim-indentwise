@@ -262,31 +262,32 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
         " boundary
         if a:fwd
             let stepvalue = 1
-            let candidate_line = a:lastline
+            let current_line = a:lastline
         else
             let stepvalue = -1
-            let candidate_line = a:firstline
+            let current_line = a:firstline
         endif
         let target_line = -1
         let last_line_of_buffer = line("$")
         let break_on_blank_line = 1
         let break_on_equal_indent = 0
-        while (candidate_line > 1 && candidate_line < last_line_of_buffer)
-            let candidate_line_indent = indent(candidate_line+stepvalue)
-            if candidate_line_indent != reference_indent
+        while (current_line > 1 && current_line < last_line_of_buffer)
+            let subsequent_line = current_line + stepvalue
+            let subsequent_line_indent = indent(subsequent_line)
+            if subsequent_line_indent != reference_indent
                 let break_on_equal_indent = 1
             endif
-            if candidate_line_indent > reference_indent
+            if subsequent_line_indent > reference_indent
                 let break_on_blank_line = 0
             else
-                let is_candidate_line_blank = strlen(getline(candidate_line+stepvalue)) == 0
-                if (break_on_blank_line && is_candidate_line_blank)
-                            \ || (!is_candidate_line_blank && break_on_equal_indent && candidate_line_indent == reference_indent)
-                    let target_line = candidate_line
+                let is_subsequent_line_blank = strlen(getline(subsequent_line)) == 0
+                if (break_on_blank_line && is_subsequent_line_blank)
+                            \ || (!is_subsequent_line_blank && break_on_equal_indent && subsequent_line_indent == reference_indent)
+                    let target_line = current_line
                     break
                 endif
             endif
-            let candidate_line += stepvalue
+            let current_line += stepvalue
         endwhile
     else
         let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, reference_indent, 1, v:count1)
@@ -295,9 +296,27 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
     " file boundaries as a fallback
     if target_line < 0
         if a:fwd
-            let target_line = line("$")
+            let fallback_line = line("$")
+            let boundary_of_range = max([a:firstline, a:lastline])
+            let stepvalue = 1
         else
-            let target_line = 1
+            let fallback_line = 1
+            let boundary_of_range = min([a:firstline, a:lastline])
+            let stepvalue = -1
+        endif
+
+        let current_line = fallback_line
+        let last_line_of_buffer = line("$")
+        while (current_line > 0 && current_line <= last_line_of_buffer)
+            if current_line == boundary_of_range || strlen(getline(current_line)) > 0
+                let target_line = current_line
+                break
+            endif
+            let current_line -= stepvalue
+        endwhile
+
+        if target_line < 0
+            let target_line = fallback_line
         endif
     endif
 
