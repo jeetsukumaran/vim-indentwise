@@ -248,36 +248,48 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
     let target_indent_depth = "<"
     let current_column = col('.')
     let line_of_lowest_indent = a:firstline
-    let current_indent = indent(line_of_lowest_indent)
+    let reference_indent = indent(line_of_lowest_indent)
     for lnr in range(a:firstline, a:lastline)
         let i = indent(lnr)
-        if i < current_indent
+        if i < reference_indent
             let line_of_lowest_indent = lnr
-            let current_indent = i
+            let reference_indent = i
         endif
     endfor
 
-    if current_indent == 0
+    if reference_indent == 0
         " special case of 0-indent: any blank line is considered a block
         " boundary
         if a:fwd
             let stepvalue = 1
-            let current_line = a:lastline
+            let candidate_line = a:lastline
         else
             let stepvalue = -1
-            let current_line = a:firstline
+            let candidate_line = a:firstline
         endif
-        let target_line = current_line
+        let target_line = -1
         let last_line_of_buffer = line("$")
-        while (current_line > 1 && current_line < last_line_of_buffer)
-            if (strlen(getline(current_line+stepvalue)) == 0) || (indent(current_line+stepvalue) < current_indent)
-                let target_line = current_line
-                break
+        let break_on_blank_line = 1
+        let break_on_equal_indent = 0
+        while (candidate_line > 1 && candidate_line < last_line_of_buffer)
+            let candidate_line_indent = indent(candidate_line+stepvalue)
+            if candidate_line_indent != reference_indent
+                let break_on_equal_indent = 1
             endif
-            let current_line += stepvalue
+            if candidate_line_indent > reference_indent
+                let break_on_blank_line = 0
+            else
+                let is_candidate_line_blank = strlen(getline(candidate_line+stepvalue)) == 0
+                if (break_on_blank_line && is_candidate_line_blank)
+                            \ || (!is_candidate_line_blank && break_on_equal_indent && candidate_line_indent == reference_indent)
+                    let target_line = candidate_line
+                    break
+                endif
+            endif
+            let candidate_line += stepvalue
         endwhile
     else
-        let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, current_indent, 1, v:count1)
+        let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, reference_indent, 1, v:count1)
     endif
 
     " file boundaries as a fallback
