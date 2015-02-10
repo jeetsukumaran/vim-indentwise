@@ -274,6 +274,9 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
             let target_line = -1
             let last_line_of_buffer = line("$")
             let break_on_blank_line = 1
+            " if a:fwd && strlen(getline(current_line + stepvalue)) == 0
+            "     let break_on_blank_line = 0
+            " endif
             let break_on_equal_indent = 0
             while (current_line > 0 && current_line <= last_line_of_buffer)
                 let subsequent_line = current_line + stepvalue
