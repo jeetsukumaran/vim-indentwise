@@ -238,47 +238,28 @@ endfunction
 " move_to_indent_block_scope_boundary {{{2
 " ==============================================================================
 function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
-    if a:fwd
-        let current_column = col('.')
-        let line_of_lesser_indent = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, "<", 0, v:count1)
-        let line_of_greater_indent = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, ">", 0, v:count1)
-        let line_of_equal_indent = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, "==", 0, v:count1)
-        let stepvalue = +1
-        let target_offset = -1
-        let current_line = a:lastline
-        let fallback_target_line = line("$")
-        if (line_of_equal_indent == current_line + stepvalue) || (line_of_greater_indent == current_line + stepvalue)
-            " next line is same indent; block scope boundary is at lesser indent
-            if line_of_lesser_indent > 0
-                let target_line = line_of_lesser_indent + target_offset
-            else
-                let target_line = fallback_target_line
-            endif
+    let target_indent_depth = "<"
+    let current_column = col('.')
+    let line_of_lowest_indent = a:firstline
+    let current_indent = indent(line_of_lowest_indent)
+    for lnr in range(a:firstline, a:lastline)
+        let i = indent(lnr)
+        if i < current_indent
+            let line_of_lowest_indent = lnr
+            let current_indent = i
+        endif
+    endfor
+    let target_line = s:_get_line_of_relative_indent(line_of_lowest_indent, line_of_lowest_indent, a:fwd, target_indent_depth, 1, v:count1)
+    if a:vim_mode == "v"
+        normal! gv
+    endif
+    if target_line > 0
+        let preserve_col_pos = get(b:, "indentwise_preserve_col_pos", get(g:, "indentwise_preserve_col_pos", 0))
+        if preserve_col_pos
+            execute "normal! " . target_line . "G" . current_column . "|"
         else
-            if line_of_lesser_indent > 0 && line_of_equal_indent > 0
-                let target_line = min([line_of_lesser_indent, line_of_equal_indent])
-                let target_line -= stepvalue
-            elseif line_of_lesser_indent > 0
-                let target_line = line_of_lesser_indent + target_offset
-            elseif line_of_equal_indent > 0
-                let target_line = line_of_equal_indent + target_offset
-            else
-                let target_line = fallback_target_line
-            endif
+            execute "normal! " . target_line . "G^"
         endif
-        if a:vim_mode == "v"
-            normal! gv
-        endif
-        if target_line > 0
-            let preserve_col_pos = get(b:, "indentwise_preserve_col_pos", get(g:, "indentwise_preserve_col_pos", 0))
-            if preserve_col_pos
-                execute "normal! " . target_line . "G" . current_column . "|"
-            else
-                execute "normal! " . target_line . "G^"
-            endif
-        endif
-    else
-        call s:move_to_indent_depth(0, "<", 1, a:vim_mode)
     endif
 endfunction
 " 2}}}
