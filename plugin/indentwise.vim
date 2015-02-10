@@ -79,23 +79,24 @@ endif
 "   ">": Go to line with the larger indentation depth;
 "   ">=": Go to line with the greater than or equal indentation depth;
 "   "<=": Go to line with the lesser than or equal indentation depth;
-function! s:_get_line_of_relative_indent(fwd, target_indent_depth, exclusive) range
+function! s:_get_line_of_relative_indent(block_start_line, block_end_line, fwd, target_indent_depth, exclusive, count)
     let stepvalue = a:fwd ? 1 : -1
     let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 0))
+    echomsg a:block_start_line . ", " . a:block_end_line
     if a:fwd
         let stepvalue = 1
-        let current_line = a:lastline
+        let current_line = a:block_end_line
     else
         let stepvalue = -1
-        let current_line = a:firstline
+        let current_line = a:block_start_line
     endif
-    let start_line = current_line
+    let block_start_line = current_line
     let last_accepted_line = current_line
-    let lastline = line('$')
+    let block_end_line = line('$')
     let current_indent = indent(current_line)
-    let num_reps = v:count1
     let indent_depth_changed = 0
-    while (current_line > 0 && current_line <= lastline && num_reps > 0)
+    let num_reps = a:count
+    while (current_line > 0 && current_line <= block_end_line && num_reps > 0)
         let current_line = current_line + stepvalue
         let candidate_line_indent = indent(current_line)
         let accept_line = 0
@@ -127,7 +128,7 @@ function! s:_get_line_of_relative_indent(fwd, target_indent_depth, exclusive) ra
     if (a:exclusive)
         let last_accepted_line = last_accepted_line - stepvalue
     endif
-    if last_accepted_line == start_line
+    if last_accepted_line == block_start_line
         return -1
     else
         return last_accepted_line
@@ -200,7 +201,7 @@ endfunction
 "   "<=": Go to line with the lesser than or equal indentation depth;
 function! <SID>move_to_indent_depth(fwd, target_indent_depth, exclusive, vim_mode) range
     let current_column = col('.')
-    let target_line = s:_get_line_of_relative_indent(a:fwd, a:target_indent_depth, a:exclusive)
+    let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, a:target_indent_depth, a:exclusive, v:count1)
     if a:vim_mode == "v"
         normal! gv
     endif
