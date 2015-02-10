@@ -52,7 +52,7 @@ given by {count}, where an indent-level is given by the effective
 {count}]_   Move to next line of with indent-level of {count}.
 
 -------------------------------------------------------------------------------
-                                             *indentwise-move-by-block-scope*
+                                          *indentwise-move-by-indent-block-scope*
 
 The following key-mappings provide motions based on indent-block scope
 boundaries:
