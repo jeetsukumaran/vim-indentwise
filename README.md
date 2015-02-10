@@ -28,8 +28,9 @@ the current line is considered to be at a greater indent-depth.
 
 ### Movements by Absolute Indent-Levels
 
-In addition, you can navigate directly to a line of a particular indent-*level*
-using:
+In addition, you can navigate directly to a line of a particular
+indent-*level*, with the level specified by a (mandatory)
+`{count}` directive, using:
 
 - `{count}[_`  : Move to *previous* line with indent-level of `{count}`.
 - `{count}]_`  : Move to *next* line with indent-level of `{count}`.
@@ -40,12 +41,16 @@ indentation amount of a line).
 
 ### Movements by Indent-Block Scope
 
-- `{count}[%`  : Move to beginning of indent-block scope (i.e.,
-                 move to the line just after the previous line of
-                 lesser indent); repeat for `{count}` outer scopes.
-- `{count}]%`  : Move to end of indent-block scope (i.e., move to
-                 the line just before the next line of lesser
-                 indent); repeat for `{count}` outer scopes.
+The following key-mappings provide motions based on indent-block scope
+boundaries, with an optional `{count}` directive specifying the number
+of levels of scope to include:
+
+- `[%`  : Move to beginning of indent-block scope (i.e., move to the
+          line just after the previous line of lesser indent); repeat
+          for `{count}` outer scopes.
+- `]%`  : Move to end of indent-block scope (i.e., move to the line
+          just before the next line of lesser indent); repeat
+          for `{count}` outer scopes.
 
 ### Customization
 
