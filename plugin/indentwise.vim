@@ -256,37 +256,39 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
             let current_indent = i
         endif
     endfor
-    let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, current_indent, 1, v:count1)
-    echomsg a:firstline . ", " . a:lastline . ", " . current_indent . ", " . target_line
+
+    if current_indent == 0
+        " special case of 0-indent: any blank line is considered a block
+        " boundary
+        if a:fwd
+            let stepvalue = 1
+            let current_line = a:lastline
+        else
+            let stepvalue = -1
+            let current_line = a:firstline
+        endif
+        let target_line = current_line
+        let last_line_of_buffer = line("$")
+        while (current_line > 1 && current_line < last_line_of_buffer)
+            if (strlen(getline(current_line+stepvalue)) == 0) || (indent(current_line+stepvalue) < current_indent)
+                let target_line = current_line
+                break
+            endif
+            let current_line += stepvalue
+        endwhile
+    else
+        let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, current_indent, 1, v:count1)
+    endif
+
+    " file boundaries as a fallback
     if target_line < 0
         if a:fwd
             let target_line = line("$")
         else
             let target_line = 1
         endif
-        " if a:fwd
-        "     let stepvalue = 1
-        "     let current_line = a:lastline
-        " else
-        "     let stepvalue = -1
-        "     let current_line = a:firstline
-        " endif
-        " let last_line_of_buffer = line("$")
-        " while (current_line > 1 && current_line < last_line_of_buffer)
-        "     if indent(current_line+stepvalue) < current_indent
-        "         let target_line = current_line
-        "         break
-        "     endif
-        "     let current_line += stepvalue
-        " endwhile
-        " if target_line == -1
-        "     if a:fwd
-        "         let target_line = last_line_of_buffer
-        "     else
-        "         let target_line = 1
-        "     endif
-        " endif
     endif
+
     if a:vim_mode == "v"
         normal! gv
     endif
