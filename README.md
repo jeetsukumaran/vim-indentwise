@@ -40,10 +40,12 @@ indentation amount of a line).
 
 ### Movements by Block Scope
 
-- `[%`  : Move to beginning of block scope (i.e., move to the line just
-          after the previous line of lesser indent).
-- `]%   : Move to end of block scope (i.e., move to the line just
-          before the next line of greater indent).
+- `{count}[%`  : Move to beginning of block scope (i.e., move to the line
+                 just after the previous line of lesser indent); repeat
+                 `{count}` nesting scopes.
+- `{count}]%`  : Move to end of block scope (i.e., move to the line just
+                 before the next line of lesser indent); repeat for
+                 `{count}` nesting scopes.
 
 ### Customization
 
