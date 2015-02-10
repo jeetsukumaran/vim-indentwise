@@ -38,6 +38,13 @@ An "indent-*level*" of a line is the number of ``shiftwidth`` units that the
 line is indented (as opposed to the "indent-*depth*", which is just the
 indentation amount of a line).
 
+### Movements by Block Scope
+
+- `[%`  : Move to beginning of block scope (i.e., move to the line just
+          after the previous line of lesser indent).
+- `]%   : Move to end of block scope (i.e., move to the line just
+          before the next line of greater indent).
+
 ### Customization
 
 If you are unhappy with the default key-mappings you can provide your own by
@@ -52,6 +59,8 @@ default mappings, you would define the following:
     map ]+ <Plug>(IndentWiseNextGreaterIndent)
     map [_ <Plug>(IndentWisePreviousAbsoluteIndent)
     map ]_ <Plug>(IndentWiseNextAbsoluteIndent)
+    map [% <Plug>(IndentWiseBlockScopeBoundaryBegin)
+    map ]% <Plug>(IndentWiseBlockScopeBoundaryEnd)
 
 ## Installation
 

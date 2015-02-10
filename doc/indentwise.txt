@@ -51,5 +51,16 @@ given by {count}, where an indent-level is given by the effective
 {count}[_   Move to previous line of with indent-level of {count}.
 {count}]_   Move to next line of with indent-level of {count}.
 
+-------------------------------------------------------------------------------
+                                             *indentwise-move-by-block-scope*
+
+The following key-mappings provide motions based on block scope boundaries:
+
+[%          Move to beginning of block scope (i.e., move to the line just
+            after the previous line of lesser indent)
+]%          Move to end of block scope (i.e., move to the line just
+            before the next line of greater indent)
+
+
  vim:tw=78:ts=8:ft=help:norl:
 
