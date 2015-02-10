@@ -89,7 +89,6 @@ endif
 function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_of_current_range, fwd, target_indent_depth, reference_indent, exclusive, count)
     let stepvalue = a:fwd ? 1 : -1
     let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 1))
-    " echomsg a:first_line_of_current_range . ", " . a:last_line_of_current_range
     if a:fwd
         let stepvalue = 1
         let current_line = a:last_line_of_current_range
@@ -128,7 +127,6 @@ function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_
                 let num_reps = num_reps - 1
                 let current_indent = candidate_line_indent
                 let last_accepted_line = current_line
-                " echomsg num_reps . ": " . current_line . ": ". getline(current_line)
             endif
         endif
     endwhile
@@ -165,7 +163,6 @@ function! <SID>_get_line_of_absolute_indent(fwd, exclusive) range
             if (! skip_blanks || strlen(getline(current_line)) > 0)
                 let num_reps = num_reps - 1
                 let current_indent = candidate_line_indent
-                " echomsg num_reps . ": " . current_line . ": ". getline(current_line)
             endif
         endif
     endwhile
@@ -247,54 +244,71 @@ endfunction
 function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
     let target_indent_depth = "<"
     let current_column = col('.')
-    let line_of_lowest_indent = a:firstline
-    let reference_indent = indent(line_of_lowest_indent)
-    for lnr in range(a:firstline, a:lastline)
-        let i = indent(lnr)
-        if i < reference_indent
-            let line_of_lowest_indent = lnr
-            let reference_indent = i
-        endif
-    endfor
-
-    if reference_indent == 0
-        " special case of 0-indent: any blank line is considered a block
-        " boundary
-        if a:fwd
-            let stepvalue = 1
-            let current_line = a:lastline
-        else
-            let stepvalue = -1
-            let current_line = a:firstline
-        endif
-        let target_line = -1
-        let last_line_of_buffer = line("$")
-        let break_on_blank_line = 1
-        let break_on_equal_indent = 0
-        while (current_line > 0 && current_line < last_line_of_buffer)
-            let subsequent_line = current_line + stepvalue
-            let subsequent_line_indent = indent(subsequent_line)
-            if (a:fwd && subsequent_line_indent != reference_indent)
-                " When going forward (only), any line of 0 indent encountered
-                " after encounter lines of greater indent are considered the
-                " end of scope
-                let break_on_equal_indent = 1
-            endif
-            if subsequent_line_indent > reference_indent
-                let break_on_blank_line = 0
-            else
-                let is_subsequent_line_blank = strlen(getline(subsequent_line)) == 0
-                if (break_on_blank_line && is_subsequent_line_blank)
-                            \ || (!is_subsequent_line_blank && break_on_equal_indent && subsequent_line_indent == reference_indent)
-                    let target_line = current_line
-                    break
-                endif
-            endif
-            let current_line += stepvalue
-        endwhile
+    let nreps = v:count1
+    let operational_first_line = a:firstline
+    let operational_last_line = a:lastline
+    if a:fwd
+        let stepvalue = 1
     else
-        let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, reference_indent, 1, v:count1)
+        let stepvalue = -1
     endif
+    while nreps > 0
+        let line_of_lowest_indent = operational_first_line
+        let reference_indent = indent(line_of_lowest_indent)
+        for lnr in range(operational_first_line, operational_last_line)
+            let i = indent(lnr)
+            if i < reference_indent
+                let line_of_lowest_indent = lnr
+                let reference_indent = i
+            endif
+        endfor
+        " echomsg join([operational_first_line, operational_last_line, reference_indent], ", ")
+        if reference_indent == 0
+            " special case of 0-indent: any blank line is considered a block
+            " boundary
+            if a:fwd
+                let current_line = operational_last_line
+            else
+                let current_line = operational_first_line
+            endif
+            let target_line = -1
+            let last_line_of_buffer = line("$")
+            let break_on_blank_line = 1
+            let break_on_equal_indent = 0
+            while (current_line > 0 && current_line <= last_line_of_buffer)
+                let subsequent_line = current_line + stepvalue
+                let subsequent_line_indent = indent(subsequent_line)
+                if (a:fwd && subsequent_line_indent != reference_indent)
+                    " When going forward (only), any line of 0 indent encountered
+                    " after encountering lines of greater indent are considered the
+                    " end of scope
+                    let break_on_equal_indent = 1
+                endif
+                if (a:fwd && subsequent_line_indent > reference_indent) || (!a:fwd && subsequent_line_indent < reference_indent)
+                    let break_on_blank_line = 0
+                else
+                    let is_subsequent_line_blank = strlen(getline(subsequent_line)) == 0
+                    if (break_on_blank_line && is_subsequent_line_blank)
+                                \ || (!is_subsequent_line_blank && break_on_equal_indent && subsequent_line_indent == reference_indent)
+                        let target_line = current_line
+                        break
+                    endif
+                endif
+                let current_line += stepvalue
+            endwhile
+            break
+        else
+            " let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, reference_indent, 1, v:count1)
+            let target_line = s:_get_line_of_relative_indent(operational_first_line, operational_last_line, a:fwd, target_indent_depth, reference_indent, 1, 1)
+        endif
+        let nreps -= 1
+        if target_line < 0
+            break
+        else
+            let operational_first_line = target_line + stepvalue
+            let operational_last_line = target_line + stepvalue
+        endif
+    endwhile
 
     if target_line < 0
         " no line located
