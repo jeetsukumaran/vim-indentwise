@@ -274,7 +274,10 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
         while (current_line > 1 && current_line < last_line_of_buffer)
             let subsequent_line = current_line + stepvalue
             let subsequent_line_indent = indent(subsequent_line)
-            if subsequent_line_indent != reference_indent
+            if (a:fwd && subsequent_line_indent != reference_indent)
+                " When going forward (only), any line of 0 indent encountered
+                " after encounter lines of greater indent are considered the
+                " end of scope
                 let break_on_equal_indent = 1
             endif
             if subsequent_line_indent > reference_indent
