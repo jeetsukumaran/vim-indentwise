@@ -54,14 +54,15 @@ given by {count}, where an indent-level is given by the effective
 -------------------------------------------------------------------------------
                                              *indentwise-move-by-block-scope*
 
-The following key-mappings provide motions based on block scope boundaries:
+The following key-mappings provide motions based on indent-block scope
+boundaries:
 
-{count}[%   Move to beginning of block scope (i.e., move to the line just
-            after the previous line of lesser indent). If {count} is given,
-            then repeat for {count} outer scopes.
-{count}]%   Move to end of block scope (i.e., move to the line just
-            before the next line of greater indent). If {count} is given,
-            then repeat for {count} outer scopes.
+{count}[%   Move to beginning of indent-block scope (i.e., move to the
+            line just after the previous line of lesser indent). If
+            {count} is given, then repeat for {count} outer scopes.
+{count}]%   Move to end of indent-block scope (i.e., move to the line
+            just before the next line of greater indent). If {count} is
+            given, then repeat for {count} outer scopes.
 
 
 

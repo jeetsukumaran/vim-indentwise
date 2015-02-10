@@ -38,14 +38,14 @@ An "indent-*level*" of a line is the number of ``shiftwidth`` units that the
 line is indented (as opposed to the "indent-*depth*", which is just the
 indentation amount of a line).
 
-### Movements by Block Scope
+### Movements by Indent-Block Scope
 
-- `{count}[%`  : Move to beginning of block scope (i.e., move to the line
-                 just after the previous line of lesser indent); repeat
-                 for `{count}` outer scopes.
-- `{count}]%`  : Move to end of block scope (i.e., move to the line just
-                 before the next line of lesser indent); repeat for
-                 `{count}` outer scopes.
+- `{count}[%`  : Move to beginning of indent-block scope (i.e.,
+                 move to the line just after the previous line of
+                 lesser indent); repeat for `{count}` outer scopes.
+- `{count}]%`  : Move to end of indent-block scope (i.e., move to
+                 the line just before the next line of lesser
+                 indent); repeat for `{count}` outer scopes.
 
 ### Customization
 
