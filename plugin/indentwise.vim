@@ -79,11 +79,9 @@ endif
 "   ">": Go to line with the larger indentation depth;
 "   ">=": Go to line with the greater than or equal indentation depth;
 "   "<=": Go to line with the lesser than or equal indentation depth;
-" skip_blanks : bool
-"   true: Skip blank lines; false: Don't skip blank lines
-"
-function! s:_get_line_of_relative_indent(fwd, target_indent_depth, skip_blanks, exclusive) range
+function! s:_get_line_of_relative_indent(fwd, target_indent_depth, exclusive) range
     let stepvalue = a:fwd ? 1 : -1
+    let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 0))
     if a:fwd
         let stepvalue = 1
         let current_line = a:lastline
@@ -118,7 +116,7 @@ function! s:_get_line_of_relative_indent(fwd, target_indent_depth, skip_blanks, 
             endif
         endif
         if accept_line
-            if (! a:skip_blanks || strlen(getline(current_line)) > 0)
+            if (! skip_blanks || strlen(getline(current_line)) > 0)
                 let num_reps = num_reps - 1
                 let current_indent = candidate_line_indent
                 let last_accepted_line = current_line
@@ -139,7 +137,7 @@ endfunction
 
 " _get_line_of_absolute_indent {{{2
 " ==============================================================================
-function! <SID>_get_line_of_absolute_indent(fwd, skip_blanks, exclusive) range
+function! <SID>_get_line_of_absolute_indent(fwd, exclusive) range
     if a:fwd
         let stepvalue = 1
         let current_line = a:lastline
@@ -147,6 +145,7 @@ function! <SID>_get_line_of_absolute_indent(fwd, skip_blanks, exclusive) range
         let stepvalue = -1
         let current_line = a:firstline
     endif
+    let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 0))
     let lastline = line('$')
     let current_indent = indent(current_line)
     let target_indent = v:count * s:sw()
@@ -155,7 +154,7 @@ function! <SID>_get_line_of_absolute_indent(fwd, skip_blanks, exclusive) range
         let current_line = current_line + stepvalue
         let candidate_line_indent = indent(current_line)
         if (candidate_line_indent == target_indent)
-            if (! a:skip_blanks || strlen(getline(current_line)) > 0)
+            if (! skip_blanks || strlen(getline(current_line)) > 0)
                 let num_reps = num_reps - 1
                 let current_indent = candidate_line_indent
                 " echomsg num_reps . ": " . current_line . ": ". getline(current_line)
@@ -199,19 +198,15 @@ endfunction
 "   ">": Go to line with the larger indentation depth;
 "   ">=": Go to line with the greater than or equal indentation depth;
 "   "<=": Go to line with the lesser than or equal indentation depth;
-" skip_blanks : bool
-"   true: Skip blank lines; false: Don't skip blank lines
-" preserve_col_pos : bool
-"   true: keep current cursor column; false: go to first non-space column
-"
-function! <SID>move_to_indent_depth(exclusive, fwd, target_indent_depth, skip_blanks, preserve_col_pos, vim_mode) range
+function! <SID>move_to_indent_depth(fwd, target_indent_depth, exclusive, vim_mode) range
     let current_column = col('.')
-    let target_line = s:_get_line_of_relative_indent(a:fwd, a:target_indent_depth, a:skip_blanks, a:exclusive)
+    let target_line = s:_get_line_of_relative_indent(a:fwd, a:target_indent_depth, a:exclusive)
     if a:vim_mode == "v"
         normal! gv
     endif
     if target_line > 0
-        if a:preserve_col_pos
+        let preserve_col_pos = get(b:, "indentwise_preserve_col_pos", get(g:, "indentwise_preserve_col_pos", 0))
+        if preserve_col_pos
             execute "normal! " . target_line . "G" . current_column . "|"
         else
             execute "normal! " . target_line . "G^"
@@ -222,14 +217,15 @@ endfunction
 
 " move_to_absolute_indent_level {{{2
 " ==============================================================================
-function! <SID>move_to_absolute_indent_level(exclusive, fwd, skip_blanks, preserve_col_pos, vim_mode) range
+function! <SID>move_to_absolute_indent_level(fwd, exclusive, vim_mode) range
     let current_column = col('.')
-    let target_line = s:_get_line_of_absolute_indent(a:fwd, a:skip_blanks, a:exclusive)
+    let target_line = s:_get_line_of_absolute_indent(a:fwd, a:exclusive)
     if a:vim_mode == "v"
         normal! gv
     endif
     if target_line > 0
-        if a:preserve_col_pos
+        let preserve_col_pos = get(b:, "indentwise_preserve_col_pos", get(g:, "indentwise_preserve_col_pos", 0))
+        if preserve_col_pos
             execute "normal! " . target_line . "G" . current_column . "|"
         else
             execute "normal! " . target_line . "G^"
@@ -243,37 +239,37 @@ endfunction
 " Public Command and Key Maps {{{1
 " ==============================================================================
 
-nnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :<C-U>call <SID>move_to_indent_depth(0, 0, "<", 1, 0, "n")<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   :call <SID>move_to_indent_depth(0, 0, "<", 1, 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   V:<C-U>call <SID>move_to_indent_depth(1, 0, "<", 1, 0, "o")<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)    :<C-U>call <SID>move_to_indent_depth(0,  "<", 0, "n")<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)         :call <SID>move_to_indent_depth(0,  "<", 0, "v")<CR>
+onoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   V:<C-U>call <SID>move_to_indent_depth(0,  "<", 1, "o")<CR>
 
-nnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :<C-U>call <SID>move_to_indent_depth(0, 0, "==", 1, 0, "n")<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    :call <SID>move_to_indent_depth(0, 0, "==", 1, 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    V:<C-U>call <SID>move_to_indent_depth(1, "==",  0, 1, 0, "o")<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)     :<C-U>call <SID>move_to_indent_depth(0, "==", 0, "n")<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)          :call <SID>move_to_indent_depth(0, "==", 0, "v")<CR>
+onoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    V:<C-U>call <SID>move_to_indent_depth(0, "==", 1, "o")<CR>
 
-nnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :<C-U>call <SID>move_to_indent_depth(0, 0, ">", 1, 0, "n")<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  :call <SID>move_to_indent_depth(0, 0, ">", 1, 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  V:<C-U>call <SID>move_to_indent_depth(1, 0, ">", 1, 0, "o")<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)   :<C-U>call <SID>move_to_indent_depth(0,  ">", 0, "n")<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)        :call <SID>move_to_indent_depth(0,  ">", 0, "v")<CR>
+onoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  V:<C-U>call <SID>move_to_indent_depth(0,  ">", 1, "o")<CR>
 
-nnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :<C-U>call <SID>move_to_indent_depth(0, 1, "<", 1, 0, "n")<CR>
-vnoremap <silent> <Plug>(IndentWiseNextLesserIndent)       :call <SID>move_to_indent_depth(0, 1, "<", 1, 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWiseNextLesserIndent)       V:<C-U>call <SID>move_to_indent_depth(1, 1, "<", 1, 0, "o")<CR>
+nnoremap <silent> <Plug>(IndentWiseNextLesserIndent)        :<C-U>call <SID>move_to_indent_depth(1,  "<", 0, "n")<CR>
+vnoremap <silent> <Plug>(IndentWiseNextLesserIndent)             :call <SID>move_to_indent_depth(1,  "<", 0, "v")<CR>
+onoremap <silent> <Plug>(IndentWiseNextLesserIndent)       V:<C-U>call <SID>move_to_indent_depth(1,  "<", 1, "o")<CR>
 
-nnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :<C-U>call <SID>move_to_indent_depth(0, 1,  "==", 1, 0, "n")<CR>
-vnoremap <silent> <Plug>(IndentWiseNextEqualIndent)        :call <SID>move_to_indent_depth(0, 1,  "==", 1, 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWiseNextEqualIndent)        V:<C-U>call <SID>move_to_indent_depth(1, 1, "==", 1, 0, "o")<CR>
+nnoremap <silent> <Plug>(IndentWiseNextEqualIndent)         :<C-U>call <SID>move_to_indent_depth(1, "==", 0, "n")<CR>
+vnoremap <silent> <Plug>(IndentWiseNextEqualIndent)              :call <SID>move_to_indent_depth(1, "==", 0, "v")<CR>
+onoremap <silent> <Plug>(IndentWiseNextEqualIndent)        V:<C-U>call <SID>move_to_indent_depth(1, "==", 1, "o")<CR>
 
-nnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :<C-U>call <SID>move_to_indent_depth(0, 1, ">", 1, 0, "n")<CR>
-vnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      :call <SID>move_to_indent_depth(0, 1, ">", 1, 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      V:<C-U>call <SID>move_to_indent_depth(1, 1, ">", 1, 0, "o")<CR>
+nnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)       :<C-U>call <SID>move_to_indent_depth(1,  ">", 0, "n")<CR>
+vnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)            :call <SID>move_to_indent_depth(1,  ">", 0, "v")<CR>
+onoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      V:<C-U>call <SID>move_to_indent_depth(1,  ">", 1, "o")<CR>
 
-nnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :<C-U>call <SID>move_to_absolute_indent_level(0, 0, 1, 0, "n")<CR>
-vnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) :call <SID>move_to_absolute_indent_level(0, 0, 1, 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) V:<C-U>call <SID>move_to_absolute_indent_level(1, 0, 1, 0, "o")<CR>
+nnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent)  :<C-U>call <SID>move_to_absolute_indent_level(0, 0, "n")<CR>
+vnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent)       :call <SID>move_to_absolute_indent_level(0, 0, "v")<CR>
+onoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent) V:<C-U>call <SID>move_to_absolute_indent_level(0, 0, "o")<CR>
 
-nnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     :<C-U>call <SID>move_to_absolute_indent_level(0, 1, 1, 0, "n")<CR>
-vnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     :call <SID>move_to_absolute_indent_level(0, 1, 1, 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     V:<C-U>call <SID>move_to_absolute_indent_level(1, 1, 1, 0, "o")<CR>
+nnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)      :<C-U>call <SID>move_to_absolute_indent_level(1, 0, "n")<CR>
+vnoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)           :call <SID>move_to_absolute_indent_level(1, 0, "v")<CR>
+onoremap <silent> <Plug>(IndentWiseNextAbsoluteIndent)     V:<C-U>call <SID>move_to_absolute_indent_level(1, 0, "o")<CR>
 
 if !exists("g:indentwise_suppress_keymaps") || !g:indentwise_suppress_keymaps
     if !hasmapto('<Plug>(IndentWisePreviousLesserIndent)')
