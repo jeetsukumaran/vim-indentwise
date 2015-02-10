@@ -99,11 +99,11 @@ function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_
     endif
     let start_line = current_line
     let last_accepted_line = current_line
-    let last_line_of_current_range = line('$')
+    let last_line_of_buffer = line('$')
     let current_indent = indent(current_line)
     let indent_depth_changed = 0
     let num_reps = a:count
-    while (current_line > 0 && current_line <= last_line_of_current_range && num_reps > 0)
+    while (current_line > 0 && current_line <= last_line_of_buffer && num_reps > 0)
         let current_line = current_line + stepvalue
         let candidate_line_indent = indent(current_line)
         let accept_line = 0
@@ -132,12 +132,12 @@ function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_
             endif
         endif
     endwhile
-    if (a:exclusive)
-        let last_accepted_line = last_accepted_line - stepvalue
-    endif
     if last_accepted_line == start_line
         return -1
     else
+        if (a:exclusive)
+            let last_accepted_line = last_accepted_line - stepvalue
+        endif
         return last_accepted_line
     endif
 endfunction
@@ -257,6 +257,36 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
         endif
     endfor
     let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, current_indent, 1, v:count1)
+    echomsg a:firstline . ", " . a:lastline . ", " . current_indent . ", " . target_line
+    if target_line < 0
+        if a:fwd
+            let target_line = line("$")
+        else
+            let target_line = 1
+        endif
+        " if a:fwd
+        "     let stepvalue = 1
+        "     let current_line = a:lastline
+        " else
+        "     let stepvalue = -1
+        "     let current_line = a:firstline
+        " endif
+        " let last_line_of_buffer = line("$")
+        " while (current_line > 1 && current_line < last_line_of_buffer)
+        "     if indent(current_line+stepvalue) < current_indent
+        "         let target_line = current_line
+        "         break
+        "     endif
+        "     let current_line += stepvalue
+        " endwhile
+        " if target_line == -1
+        "     if a:fwd
+        "         let target_line = last_line_of_buffer
+        "     else
+        "         let target_line = 1
+        "     endif
+        " endif
+    endif
     if a:vim_mode == "v"
         normal! gv
     endif
