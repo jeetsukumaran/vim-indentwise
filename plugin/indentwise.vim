@@ -79,24 +79,24 @@ endif
 "   ">": Go to line with the larger indentation depth;
 "   ">=": Go to line with the greater than or equal indentation depth;
 "   "<=": Go to line with the lesser than or equal indentation depth;
-function! s:_get_line_of_relative_indent(block_start_line, block_end_line, fwd, target_indent_depth, exclusive, count)
+function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_of_current_range, fwd, target_indent_depth, exclusive, count)
     let stepvalue = a:fwd ? 1 : -1
     let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 0))
-    echomsg a:block_start_line . ", " . a:block_end_line
+    " echomsg a:first_line_of_current_range . ", " . a:last_line_of_current_range
     if a:fwd
         let stepvalue = 1
-        let current_line = a:block_end_line
+        let current_line = a:last_line_of_current_range
     else
         let stepvalue = -1
-        let current_line = a:block_start_line
+        let current_line = a:first_line_of_current_range
     endif
-    let block_start_line = current_line
+    let start_line = current_line
     let last_accepted_line = current_line
-    let block_end_line = line('$')
+    let last_line_of_current_range = line('$')
     let current_indent = indent(current_line)
     let indent_depth_changed = 0
     let num_reps = a:count
-    while (current_line > 0 && current_line <= block_end_line && num_reps > 0)
+    while (current_line > 0 && current_line <= last_line_of_current_range && num_reps > 0)
         let current_line = current_line + stepvalue
         let candidate_line_indent = indent(current_line)
         let accept_line = 0
@@ -128,7 +128,7 @@ function! s:_get_line_of_relative_indent(block_start_line, block_end_line, fwd, 
     if (a:exclusive)
         let last_accepted_line = last_accepted_line - stepvalue
     endif
-    if last_accepted_line == block_start_line
+    if last_accepted_line == start_line
         return -1
     else
         return last_accepted_line
