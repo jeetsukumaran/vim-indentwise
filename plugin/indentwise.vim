@@ -81,7 +81,7 @@ endif
 "   "<=": Go to line with the lesser than or equal indentation depth;
 function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_of_current_range, fwd, target_indent_depth, exclusive, count)
     let stepvalue = a:fwd ? 1 : -1
-    let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 0))
+    let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 1))
     " echomsg a:first_line_of_current_range . ", " . a:last_line_of_current_range
     if a:fwd
         let stepvalue = 1
@@ -146,7 +146,7 @@ function! <SID>_get_line_of_absolute_indent(fwd, exclusive) range
         let stepvalue = -1
         let current_line = a:firstline
     endif
-    let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 0))
+    let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 1))
     let lastline = line('$')
     let current_indent = indent(current_line)
     let target_indent = v:count * s:sw()
