@@ -69,8 +69,9 @@ endif
 "
 " Parameters
 " ----------
-" exclusive : bool
-"   true: Motion is exclusive; false: Motion is inclusive
+" first_line_of_current_range,
+" last_line_of_current_range : int
+"   start and end lines of current line range
 " fwd : bool
 "   true: Go to next line; false: Go to previous line
 " target_indent_depth : str
@@ -79,7 +80,13 @@ endif
 "   ">": Go to line with the larger indentation depth;
 "   ">=": Go to line with the greater than or equal indentation depth;
 "   "<=": Go to line with the lesser than or equal indentation depth;
-function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_of_current_range, fwd, target_indent_depth, exclusive, count)
+" reference_indent : int
+"   If < 0, then the indent of the current line will be used; otherwise this
+"   is the reference value for the indent of which we are seeking an lesser,
+"   equal or greater indent.
+" exclusive : bool
+"   true: Motion is exclusive; false: Motion is inclusive
+function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_of_current_range, fwd, target_indent_depth, reference_indent, exclusive, count)
     let stepvalue = a:fwd ? 1 : -1
     let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 1))
     " echomsg a:first_line_of_current_range . ", " . a:last_line_of_current_range
@@ -201,7 +208,7 @@ endfunction
 "   "<=": Go to line with the lesser than or equal indentation depth;
 function! <SID>move_to_indent_depth(fwd, target_indent_depth, exclusive, vim_mode) range
     let current_column = col('.')
-    let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, a:target_indent_depth, a:exclusive, v:count1)
+    let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, a:target_indent_depth, -1, a:exclusive, v:count1)
     if a:vim_mode == "v"
         normal! gv
     endif
@@ -249,7 +256,7 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
             let current_indent = i
         endif
     endfor
-    let target_line = s:_get_line_of_relative_indent(line_of_lowest_indent, line_of_lowest_indent, a:fwd, target_indent_depth, 1, v:count1)
+    let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, current_indent, 1, v:count1)
     if a:vim_mode == "v"
         normal! gv
     endif
