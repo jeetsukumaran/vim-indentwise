@@ -271,7 +271,7 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
         let last_line_of_buffer = line("$")
         let break_on_blank_line = 1
         let break_on_equal_indent = 0
-        while (current_line > 1 && current_line < last_line_of_buffer)
+        while (current_line > 0 && current_line < last_line_of_buffer)
             let subsequent_line = current_line + stepvalue
             let subsequent_line_indent = indent(subsequent_line)
             if (a:fwd && subsequent_line_indent != reference_indent)
@@ -296,8 +296,10 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
         let target_line = s:_get_line_of_relative_indent(a:firstline, a:lastline, a:fwd, target_indent_depth, reference_indent, 1, v:count1)
     endif
 
-    " file boundaries as a fallback
     if target_line < 0
+        " no line located
+        " figure out an alterate reasonable scope, falling back on file
+        " boundaries if
         if a:fwd
             let fallback_line = line("$")
             let boundary_of_range = max([a:firstline, a:lastline])
@@ -317,10 +319,32 @@ function! <SID>move_to_indent_block_scope_boundary(fwd, vim_mode) range
             endif
             let current_line -= stepvalue
         endwhile
-
         if target_line < 0
             let target_line = fallback_line
         endif
+    elseif a:fwd && strlen(getline(target_line)) == 0
+        " && get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 1))
+        " when going forward, we do not want to include blank lines
+        " in current scope
+        let fallback_line = target_line
+        let stepvalue = 1
+        let boundary_of_range = max([a:firstline, a:lastline])
+        " if a:fwd
+        "     let stepvalue = 1
+        "     let boundary_of_range = max([a:firstline, a:lastline])
+        " else
+        "     let stepvalue = -1
+        "     let boundary_of_range = min([a:firstline, a:lastline])
+        " endif
+        let current_line = fallback_line
+        let last_line_of_buffer = line("$")
+        while (current_line > 0 && current_line <= last_line_of_buffer)
+            if current_line == boundary_of_range || strlen(getline(current_line)) > 0
+                let target_line = current_line
+                break
+            endif
+            let current_line -= stepvalue
+        endwhile
     endif
 
     if a:vim_mode == "v"
