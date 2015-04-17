@@ -48,8 +48,8 @@ The following key-mappings provide motions to go to lines of an indent-level
 given by {count}, where an indent-level is given by the effective
 |'shiftwidth'| setting:
 
-{count}[_   Move to previous line of with indent-level of {count}.
-{count}]_   Move to next line of with indent-level of {count}.
+{count}[_   Move to previous line with indent-level of {count}.
+{count}]_   Move to next line with indent-level of {count}.
 
 -------------------------------------------------------------------------------
                                           *indentwise-move-by-indent-block-scope*
