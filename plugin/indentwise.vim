@@ -426,33 +426,43 @@ onoremap <silent> <Plug>(IndentWiseBlockScopeBoundaryEnd)     V:<C-U>call <SID>m
 if !exists("g:indentwise_suppress_keymaps") || !g:indentwise_suppress_keymaps
     if !hasmapto('<Plug>(IndentWisePreviousLesserIndent)')
         map [- <Plug>(IndentWisePreviousLesserIndent)
+        sunmap [-
     endif
     if !hasmapto('<Plug>(IndentWisePreviousEqualIndent)')
         map [= <Plug>(IndentWisePreviousEqualIndent)
+        sunmap [=
     endif
     if !hasmapto('<Plug>(IndentWisePreviousGreaterIndent)')
         map [+ <Plug>(IndentWisePreviousGreaterIndent)
+        sunmap [+
     endif
     if !hasmapto('<Plug>(IndentWiseNextLesserIndent)')
         map ]- <Plug>(IndentWiseNextLesserIndent)
+        sunmap ]-
     endif
     if !hasmapto('<Plug>(IndentWiseNextEqualIndent)')
         map ]= <Plug>(IndentWiseNextEqualIndent)
+        sunmap ]=
     endif
     if !hasmapto('<Plug>(IndentWiseNextGreaterIndent)')
         map ]+ <Plug>(IndentWiseNextGreaterIndent)
+        sunmap ]+
     endif
     if !hasmapto('<Plug>(IndentWisePreviousAbsoluteIndent)')
         map [_ <Plug>(IndentWisePreviousAbsoluteIndent)
+        sunmap [_
     endif
     if !hasmapto('<Plug>(IndentWiseNextAbsoluteIndent)')
         map ]_ <Plug>(IndentWiseNextAbsoluteIndent)
+        sunmap ]_
     endif
     if !hasmapto('<Plug>(IndentWiseBlockScopeBoundaryBegin)')
         map [% <Plug>(IndentWiseBlockScopeBoundaryBegin)
+        sunmap [%
     endif
     if !hasmapto('<Plug>(IndentWiseBlockScopeBoundaryEnd)')
         map ]% <Plug>(IndentWiseBlockScopeBoundaryEnd)
+        sunmap ]%
     endif
 
 endif
