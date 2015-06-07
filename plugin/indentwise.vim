@@ -88,7 +88,11 @@ endif
 "   true: Motion is exclusive; false: Motion is inclusive
 function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_of_current_range, fwd, target_indent_depth, reference_indent, exclusive, count)
     let stepvalue = a:fwd ? 1 : -1
+
     let skip_blanks = get(b:, "indentwise_skip_blanks", get(g:, "indentwise_skip_blanks", 1))
+    let blanks_have_null_indentation = get(b:, "indentwise_blanks_have_null_indentation", get(g:, "indentwise_blanks_have_null_indentation", 1))
+    let treat_whitespace_as_blank = get(b:, "indentwise_treat_whitespace_as_blank", get(g:, "indentwise_treat_whitespace_as_blank", 1))
+
     if a:fwd
         let stepvalue = 1
         let current_line = a:last_line_of_current_range
@@ -106,24 +110,35 @@ function! s:_get_line_of_relative_indent(first_line_of_current_range, last_line_
         let current_line = current_line + stepvalue
         let candidate_line_indent = indent(current_line)
         let accept_line = 0
-        if ((a:target_indent_depth == "<") && candidate_line_indent < current_indent)
+
+        if treat_whitespace_as_blank
+          let blank_line = empty(matchstr(getline(current_line), '[^\s]'))
+        else
+          let blank_line = empty(getline(current_line))
+        endif
+
+        if blank_line && blanks_have_null_indentation
+          let indent_depth_changed = 1
+        elseif ((a:target_indent_depth == "<") && candidate_line_indent < current_indent)
             let accept_line = 1
         elseif ((a:target_indent_depth == ">") && candidate_line_indent > current_indent)
             let accept_line = 1
         elseif (a:target_indent_depth == "==")
             if candidate_line_indent == current_indent
-                if l:indent_depth_changed || !g:indentwise_equal_indent_skips_contiguous
-                    let accept_line = 1
-                    let indent_depth_changed = 0
-                else
-                    let last_accepted_line = current_line
+                if !skip_blanks || !blank_line
+                  if l:indent_depth_changed || !g:indentwise_equal_indent_skips_contiguous
+                      let accept_line = 1
+                      let indent_depth_changed = 0
+                  else
+                      let last_accepted_line = current_line
+                  endif
                 endif
             elseif candidate_line_indent != current_indent
                 let indent_depth_changed = 1
             endif
         endif
         if accept_line
-            if (! skip_blanks || strlen(getline(current_line)) > 0)
+            if !skip_blanks || !blank_line
                 let num_reps = num_reps - 1
                 let current_indent = candidate_line_indent
                 let last_accepted_line = current_line
