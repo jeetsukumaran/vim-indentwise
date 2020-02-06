@@ -231,6 +231,15 @@ function! <SID>move_to_indent_depth(fwd, target_indent_depth, exclusive, vim_mod
         else
             execute "normal! " . target_line . "G^"
         endif
+    else
+        let not_found_behaviour = get(b:, "indentwise_not_found_behaviour", get(g: "indentwise_not_found_behaviour", 0))
+        if not_found_behaviour != 0
+            if fwd
+                execute "normal! G"
+            else
+                execute "normal! gg"
+            endif
+        endif
     endif
 endfunction
 " 2}}}
