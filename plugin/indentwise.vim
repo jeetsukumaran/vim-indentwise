@@ -400,27 +400,27 @@ endfunction
 
 nnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)    :<C-U>call <SID>move_to_indent_depth(0,  "<", 0, "n")<CR>
 vnoremap <silent> <Plug>(IndentWisePreviousLesserIndent)         :call <SID>move_to_indent_depth(0,  "<", 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   V:<C-U>call <SID>move_to_indent_depth(0,  "<", 1, "o")<CR>
+onoremap <silent> <Plug>(IndentWisePreviousLesserIndent)   V:<C-U>call <SID>move_to_indent_depth(0,  "<", 0, "o")<CR>
 
 nnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)     :<C-U>call <SID>move_to_indent_depth(0, "==", 0, "n")<CR>
 vnoremap <silent> <Plug>(IndentWisePreviousEqualIndent)          :call <SID>move_to_indent_depth(0, "==", 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    V:<C-U>call <SID>move_to_indent_depth(0, "==", 1, "o")<CR>
+onoremap <silent> <Plug>(IndentWisePreviousEqualIndent)    V:<C-U>call <SID>move_to_indent_depth(0, "==", 0, "o")<CR>
 
 nnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)   :<C-U>call <SID>move_to_indent_depth(0,  ">", 0, "n")<CR>
 vnoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)        :call <SID>move_to_indent_depth(0,  ">", 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  V:<C-U>call <SID>move_to_indent_depth(0,  ">", 1, "o")<CR>
+onoremap <silent> <Plug>(IndentWisePreviousGreaterIndent)  V:<C-U>call <SID>move_to_indent_depth(0,  ">", 0, "o")<CR>
 
 nnoremap <silent> <Plug>(IndentWiseNextLesserIndent)        :<C-U>call <SID>move_to_indent_depth(1,  "<", 0, "n")<CR>
 vnoremap <silent> <Plug>(IndentWiseNextLesserIndent)             :call <SID>move_to_indent_depth(1,  "<", 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWiseNextLesserIndent)       V:<C-U>call <SID>move_to_indent_depth(1,  "<", 1, "o")<CR>
+onoremap <silent> <Plug>(IndentWiseNextLesserIndent)       V:<C-U>call <SID>move_to_indent_depth(1,  "<", 0, "o")<CR>
 
 nnoremap <silent> <Plug>(IndentWiseNextEqualIndent)         :<C-U>call <SID>move_to_indent_depth(1, "==", 0, "n")<CR>
 vnoremap <silent> <Plug>(IndentWiseNextEqualIndent)              :call <SID>move_to_indent_depth(1, "==", 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWiseNextEqualIndent)        V:<C-U>call <SID>move_to_indent_depth(1, "==", 1, "o")<CR>
+onoremap <silent> <Plug>(IndentWiseNextEqualIndent)        V:<C-U>call <SID>move_to_indent_depth(1, "==", 0, "o")<CR>
 
 nnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)       :<C-U>call <SID>move_to_indent_depth(1,  ">", 0, "n")<CR>
 vnoremap <silent> <Plug>(IndentWiseNextGreaterIndent)            :call <SID>move_to_indent_depth(1,  ">", 0, "v")<CR>
-onoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      V:<C-U>call <SID>move_to_indent_depth(1,  ">", 1, "o")<CR>
+onoremap <silent> <Plug>(IndentWiseNextGreaterIndent)      V:<C-U>call <SID>move_to_indent_depth(1,  ">", 0, "o")<CR>
 
 nnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent)  :<C-U>call <SID>move_to_absolute_indent_level(0, 0, "n")<CR>
 vnoremap <silent> <Plug>(IndentWisePreviousAbsoluteIndent)       :call <SID>move_to_absolute_indent_level(0, 0, "v")<CR>
